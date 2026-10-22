@@ -145,10 +145,15 @@ export default function Footer() {
             <div className="flex items-start gap-3">
               <Phone className="w-4 h-4 text-gold-400 mt-1 flex-shrink-0" />
               <div>
-                <p className="text-xs text-slate-400">Inquiry &amp; Bookings Hotline</p>
-                <a href="tel:+923065602040" className="hover:text-gold-400 font-medium">
-                  0306 5602040 / +92 306 5602040
-                </a>
+                <p className="text-xs text-slate-400">Inquiry &amp; Bookings Hotlines</p>
+                <div className="flex flex-col gap-0.5">
+                  <a href="tel:+923065602040" className="hover:text-gold-400 font-medium text-white text-xs">
+                    0306 5602040
+                  </a>
+                  <a href="tel:+923144310865" className="hover:text-gold-400 font-medium text-white text-xs">
+                    0314 4310865
+                  </a>
+                </div>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -164,7 +169,9 @@ export default function Footer() {
               <MapPin className="w-4 h-4 text-gold-400 mt-1 flex-shrink-0" />
               <div>
                 <p className="text-xs text-slate-400">Head Office</p>
-                <p className="text-xs text-white">Gulberg III, Lahore, Pakistan</p>
+                <p className="text-xs text-white leading-relaxed">
+                  1 Minar wali Masjid, Kacha Jail road, Chungi Amar Sidhu Lahore
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -178,10 +185,11 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Sub-footer legal and rights */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 pt-8 border-t border-navy-900 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-4">
+      {/* Sub-footer legal, rights, and developer credit */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 pt-8 border-t border-navy-900 text-xs text-slate-500 flex flex-col lg:flex-row items-center justify-between gap-4">
         <p>© {new Date().getFullYear()} Bilal Travels &amp; Tours. All rights reserved.</p>
-        <div className="flex items-center gap-6">
+        
+        <div className="flex flex-wrap items-center justify-center gap-6">
           <Link href="/privacy" className="hover:text-gold-400 transition-colors">
             Privacy Policy
           </Link>
@@ -191,6 +199,17 @@ export default function Footer() {
           <Link href="/cancellation" className="hover:text-gold-400 transition-colors">
             Cancellation &amp; Refund Policy
           </Link>
+        </div>
+
+        {/* Developer Credit: XENITH Solutions Pakistan */}
+        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-navy-900/90 border border-gold-500/30 text-[11px] text-slate-300 shadow-md hover:border-gold-400/80 transition-all">
+          <span className="w-2 h-2 rounded-full bg-gradient-to-r from-gold-400 to-amber-300 animate-pulse"></span>
+          <span>
+            Developed by{" "}
+            <span className="text-gold-400 font-bold tracking-wide">
+              XENITH Solutions Pakistan
+            </span>
+          </span>
         </div>
       </div>
     </footer>

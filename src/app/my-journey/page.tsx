@@ -155,7 +155,7 @@ export default function MyJourneyPage() {
 
               <div className="flex flex-wrap items-center gap-3">
                 <a
-                  href="tel:+923000000000"
+                  href="tel:+923065602040"
                   className="inline-flex items-center gap-2 border border-border-muted hover:border-gold-400 text-navy-900 px-4 py-2.5 rounded-full text-xs font-semibold transition-all"
                 >
                   <Phone className="w-3.5 h-3.5 text-gold-600" />

@@ -176,10 +176,17 @@ export default function HomeFaqSection() {
           <div className="flex items-center gap-3">
             <a
               href="tel:+923065602040"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-navy-950 font-bold text-xs border border-border-muted hover:border-gold-400 shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white text-navy-950 font-bold text-xs border border-border-muted hover:border-gold-400 shadow-sm"
             >
               <Phone className="w-3.5 h-3.5 text-gold-600" />
               <span>0306 5602040</span>
+            </a>
+            <a
+              href="tel:+923144310865"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white text-navy-950 font-bold text-xs border border-border-muted hover:border-gold-400 shadow-sm"
+            >
+              <Phone className="w-3.5 h-3.5 text-gold-600" />
+              <span>0314 4310865</span>
             </a>
             <a
               href="https://wa.me/923065602040?text=Hello%20Bilal%20Travels,%20I%20have%20a%20question%20regarding%20visa%20processing."

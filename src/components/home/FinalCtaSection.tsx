@@ -15,8 +15,9 @@ import {
 
 export default function FinalCtaSection() {
   const WHATSAPP_NUMBER = "923065602040";
-  const DISPLAY_PHONE = "0306 5602040";
-  const OFFICE_ADDRESS = "Gulberg III, Lahore, Pakistan";
+  const PRIMARY_PHONE = "0306 5602040";
+  const SECONDARY_PHONE = "0314 4310865";
+  const OFFICE_ADDRESS = "1 Minar wali Masjid, Kacha Jail road, Chungi Amar Sidhu Lahore";
 
   const handleWhatsApp = () => {
     const message = encodeURIComponent(
@@ -52,10 +53,10 @@ export default function FinalCtaSection() {
               </p>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-4 pt-2">
+              <div className="flex flex-wrap items-center gap-3 pt-2">
                 <button
                   onClick={handleWhatsApp}
-                  className="inline-flex items-center gap-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm px-7 py-3.5 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+                  className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm px-6 py-3.5 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
                 >
                   <MessageCircle className="w-4 h-4 fill-white" />
                   <span>Chat on WhatsApp</span>
@@ -63,17 +64,25 @@ export default function FinalCtaSection() {
 
                 <a
                   href={`tel:+${WHATSAPP_NUMBER}`}
-                  className="inline-flex items-center gap-2.5 bg-white/10 hover:bg-white/20 text-white font-semibold text-sm px-6 py-3.5 rounded-full border border-white/20 hover:border-gold-400 transition-all duration-300"
+                  className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-sm px-5 py-3.5 rounded-full border border-white/20 hover:border-gold-400 transition-all duration-300"
                 >
                   <Phone className="w-4 h-4 text-gold-400" />
-                  <span>Call {DISPLAY_PHONE}</span>
+                  <span>{PRIMARY_PHONE}</span>
+                </a>
+
+                <a
+                  href="tel:+923144310865"
+                  className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-sm px-5 py-3.5 rounded-full border border-white/20 hover:border-gold-400 transition-all duration-300"
+                >
+                  <Phone className="w-4 h-4 text-gold-400" />
+                  <span>{SECONDARY_PHONE}</span>
                 </a>
 
                 <Link
                   href="/contact"
                   className="inline-flex items-center gap-2 text-xs font-bold text-gold-300 hover:text-white uppercase tracking-wider transition-colors ml-1"
                 >
-                  <span>Book Office Consultation</span>
+                  <span>Book Consultation</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>

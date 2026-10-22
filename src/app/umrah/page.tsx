@@ -61,7 +61,7 @@ export default function UmrahPage() {
 
           <div className="flex items-center gap-3">
             <a
-              href="https://wa.me/923000000000?text=Assalam%20o%20Alaikum%2C%20I%20want%20to%20inquire%20about%20Umrah%20Packages"
+              href="https://wa.me/923065602040?text=Assalam%20o%20Alaikum%2C%20I%20want%20to%20inquire%20about%20Umrah%20Packages"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-full text-sm shadow-soft transition-all"

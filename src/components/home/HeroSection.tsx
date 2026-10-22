@@ -1,13 +1,17 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
   Sparkles,
-  Star,
+  ChevronLeft,
+  ChevronRight,
   CheckCircle2,
+  Compass,
 } from "lucide-react";
+import Hologram3DPass from "@/components/ui/Hologram3DPass";
 
 interface HeroSlide {
   id: string;
@@ -178,9 +182,9 @@ const HERO_SLIDES: HeroSlide[] = [
     country: "Malaysia",
     code: "MY",
     flag: "🇲🇾",
-    categoryBadge: "TROPICAL ESCAPE | ISLANDS & RAINFORESTS | MALAYSIA",
-    headlineMain: "Emerald Waters,",
-    headlineAccent: "Tropical Bliss",
+    categoryBadge: "TROPICAL SPLENDOR | PETRONAS & LANGKAWI | MALAYSIA",
+    headlineMain: "Tropical Wonder in",
+    headlineAccent: "Enchanting Malaysia",
     subtitle:
       "Unwind on the pristine white-sand shores of Langkawi, take the panoramic SkyCab cable car, and explore the bustling skyline of Kuala Lumpur.",
     highlightSpot: "Petronas Twin Towers & Langkawi SkyCab",
@@ -194,173 +198,180 @@ const HERO_SLIDES: HeroSlide[] = [
 
 export default function HeroSection() {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
 
-  const SLIDE_DURATION_MS = 7500; // 7.5 seconds smooth rotation
+  const SLIDE_DURATION_MS = 5000; // 5 seconds rotation
+
+  const handleNext = useCallback(() => {
+    setCurrentSlideIndex((prev) => (prev + 1) % HERO_SLIDES.length);
+  }, []);
+
+  const handlePrev = useCallback(() => {
+    setCurrentSlideIndex((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+  }, []);
 
   useEffect(() => {
-    if (isPaused) return;
-
     const timer = setInterval(() => {
-      setCurrentSlideIndex((prev) => (prev + 1) % HERO_SLIDES.length);
+      handleNext();
     }, SLIDE_DURATION_MS);
 
     return () => clearInterval(timer);
-  }, [isPaused]);
+  }, [handleNext, currentSlideIndex]);
 
   const currentSlide = HERO_SLIDES[currentSlideIndex];
 
   return (
-    <section
-      className="relative min-h-[490px] lg:min-h-[550px] flex items-center bg-[#FAF8F3] overflow-hidden"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-    >
-      {/* =========================================================================
-          SLIDE DURATION PROGRESS BAR (TOP HAIRLINE INDICATOR)
-      ========================================================================= */}
-      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gold-400/20 z-30 overflow-hidden">
-        <div
+    <section className="relative min-h-[520px] lg:min-h-[580px] flex items-center bg-[#FAF8F3] overflow-hidden">
+      {/* Top Slide Progress Bar */}
+      <div className="absolute top-0 left-0 right-0 h-[3px] bg-gold-400/20 z-30 overflow-hidden">
+        <motion.div
           key={`progress-${currentSlideIndex}`}
-          className={`h-full bg-gradient-to-r from-gold-500 via-amber-400 to-gold-600 shadow-[0_0_10px_rgba(200,163,94,0.8)] ${
-            isPaused ? "w-full opacity-60" : "animate-slide-progress"
-          }`}
-        ></div>
+          initial={{ width: "0%" }}
+          animate={{ width: "100%" }}
+          transition={{ duration: 5, ease: "linear" }}
+          className="h-full bg-gradient-to-r from-gold-500 via-amber-400 to-gold-600 shadow-[0_0_12px_rgba(200,163,94,0.9)]"
+        />
       </div>
 
-      {/* =========================================================================
-          RIGHT-SIDE BACKGROUND SLIDESHOW WITH CINEMATIC ZOOM & CROSS-FADE
-      ========================================================================= */}
+      {/* Right Background Slideshow with Framer Motion Cross-fade */}
       <div className="absolute top-0 right-0 bottom-0 w-full lg:w-[65%] select-none overflow-hidden">
-        {HERO_SLIDES.map((slide, idx) => {
-          const isActive = idx === currentSlideIndex;
-          return (
-            <div
-              key={slide.id}
-              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-              }`}
-            >
-              <div
-                className={`w-full h-full bg-cover bg-center bg-no-repeat ${
-                  isActive ? "animate-ken-burns" : ""
-                }`}
-                style={{
-                  backgroundImage: `url('${slide.image}')`,
-                }}
-              ></div>
-            </div>
-          );
-        })}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentSlide.id}
+            initial={{ opacity: 0, scale: 1.06 }}
+            animate={{ opacity: 1, scale: 1.0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url('${currentSlide.image}')` }}
+          />
+        </AnimatePresence>
 
-        {/* Left Gradient Fade: Seamless transition into Warm Ivory base */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#FAF8F3] via-[#FAF8F3]/75 to-transparent lg:via-[#FAF8F3]/30 pointer-events-none z-20"></div>
-        {/* Top subtle fade */}
-        <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#FAF8F3]/80 to-transparent pointer-events-none z-20"></div>
-        {/* Bottom subtle fade into the pill bar area */}
-        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#FAF8F3] via-[#FAF8F3]/80 to-transparent pointer-events-none z-20"></div>
+        {/* Ambient Gradient Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#FAF8F3] via-[#FAF8F3]/80 to-transparent lg:via-[#FAF8F3]/30 pointer-events-none z-10" />
+        <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#FAF8F3]/80 to-transparent pointer-events-none z-10" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#FAF8F3] via-[#FAF8F3]/85 to-transparent pointer-events-none z-10" />
 
-        {/* =========================================================================
-            ANIMATED FLOATING GLASS CARDS (REPLACED THE AWKWARD WIRES & PLANE)
-        ========================================================================= */}
-        
-        {/* Floating Glass Pill 1: Top Right (Certified Guidance & Dossier Review) */}
+        {/* Top Right Certified Guidance Pill */}
         <div className="absolute top-6 right-6 z-20 hidden md:flex items-center gap-2.5 bg-navy-950/85 backdrop-blur-md px-4 py-2 rounded-full border border-gold-400/30 text-white shadow-xl animate-float-slow">
           <div className="w-6 h-6 rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center">
             <CheckCircle2 className="w-4 h-4 text-gold-400" />
           </div>
           <div className="text-left text-xs">
             <span className="font-bold text-white tracking-wide">Certified Guidance</span>
-            <span className="text-gold-300 text-[10px] block font-mono">Verified File Preparation</span>
+            <span className="text-gold-300 text-[10px] block font-mono">DTS Licensed Travel Desk</span>
           </div>
         </div>
 
-        {/* Floating Spotlight Card 2: Lower Right Destination Spotlight */}
-        <div className="absolute bottom-6 right-6 z-20 hidden sm:flex flex-col gap-2 bg-navy-950/90 backdrop-blur-md p-3.5 rounded-2xl border border-white/20 text-white shadow-2xl max-w-xs animate-float-reverse">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <img
-                src={`https://flagcdn.com/w40/${currentSlide.code.toLowerCase()}.png`}
-                alt={currentSlide.country}
-                className="w-5 h-3.5 object-cover rounded shadow-xs"
-                onError={(e) => {
-                  (e.target as HTMLElement).style.display = "none";
-                }}
-              />
-              <span className="text-xs font-black text-white tracking-wide">
-                {currentSlide.country}
-              </span>
-            </div>
-
-            <span className="inline-flex items-center gap-1 text-[10px] text-emerald-400 font-bold bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-500/30">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Live Feature</span>
-            </span>
-          </div>
-
-          <p className="text-[11px] text-ivory-200 font-medium line-clamp-1">
-            📍 {currentSlide.highlightSpot}
-          </p>
-
-          <div className="flex items-center justify-between pt-1 border-t border-white/10 text-[10px] text-slate-300">
-            <span className="text-gold-300 font-bold flex items-center gap-1">
-              <Star className="w-3 h-3 fill-gold-400 text-gold-400" />
-              <span>4.9/5 Rating</span>
-            </span>
-            <span className="font-mono text-slate-400">
-              {currentSlideIndex + 1}/{HERO_SLIDES.length}
-            </span>
-          </div>
+        {/* Floating Interactive 3D Hologram Travel Pass */}
+        <div className="absolute bottom-16 right-6 z-20 hidden lg:block animate-float-3d">
+          <Hologram3DPass
+            currentSlideCountry={currentSlide.country}
+            destinationCode={
+              currentSlide.id === "mecca" || currentSlide.id === "madina"
+                ? "JED"
+                : currentSlide.id === "dubai"
+                ? "DXB"
+                : currentSlide.id === "switzerland"
+                ? "ZRH"
+                : currentSlide.id === "paris"
+                ? "CDG"
+                : currentSlide.id === "london"
+                ? "LHR"
+                : currentSlide.id === "istanbul"
+                ? "IST"
+                : currentSlide.id === "baku"
+                ? "GYD"
+                : "KUL"
+            }
+          />
         </div>
 
+        {/* Manual Slideshow Chevron Navigation Controls */}
+        <div className="absolute right-6 top-1/2 -translate-y-1/2 z-30 flex flex-col gap-2.5 hidden sm:flex">
+          <button
+            onClick={handlePrev}
+            aria-label="Previous Slide"
+            className="w-10 h-10 rounded-full bg-navy-950/80 hover:bg-gold-500 text-white hover:text-navy-950 border border-white/20 hover:border-gold-400 flex items-center justify-center backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-110"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            onClick={handleNext}
+            aria-label="Next Slide"
+            className="w-10 h-10 rounded-full bg-navy-950/80 hover:bg-gold-500 text-white hover:text-navy-950 border border-white/20 hover:border-gold-400 flex items-center justify-center backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-110"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
       </div>
 
-      {/* =========================================================================
-          HERO CONTENT (CLEAN LEFT COLUMN WITH TYPOGRAPHY & ANIMATIONS)
-      ========================================================================= */}
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-8 py-8 sm:py-10 lg:py-12 w-full">
+      {/* Hero Content (Left Column with Framer Motion transitions) */}
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-8 py-10 sm:py-14 w-full">
         <div className="max-w-xl lg:max-w-2xl">
-          {/* DYNAMIC TEXT CONTENT WITH SMOOTH SLIDE ENTRANCE ANIMATION */}
-          <div
-            key={`content-${currentSlide.id}`}
-            className="space-y-4 animate-fade-in-up"
-          >
-            {/* Top Category Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/95 backdrop-blur-md border border-gold-400/50 shadow-sm text-gold-700 text-[10px] sm:text-[11px] font-bold tracking-[0.16em] uppercase">
-              <Sparkles className="w-3.5 h-3.5 text-gold-500 animate-shimmer-pulse" />
-              <span>{currentSlide.categoryBadge}</span>
-            </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSlide.id}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="space-y-4"
+            >
+              {/* Category Badge */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-gold-400/50 shadow-sm text-gold-700 text-[10px] sm:text-[11px] font-bold tracking-[0.16em] uppercase">
+                <Sparkles className="w-3.5 h-3.5 text-gold-500 animate-shimmer-pulse" />
+                <span>{currentSlide.categoryBadge}</span>
+              </div>
 
-            {/* Headline */}
-            <h1 className="font-serif text-3xl sm:text-4xl lg:text-[44px] text-navy-900 tracking-tight leading-[1.15]">
-              {currentSlide.headlineMain} <br />
-              <span className="text-navy-900 font-serif">{currentSlide.headlineAccent}</span>
-            </h1>
+              {/* Headline */}
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-[46px] text-navy-900 tracking-tight leading-[1.14]">
+                {currentSlide.headlineMain} <br />
+                <span className="text-gold-600 font-serif">{currentSlide.headlineAccent}</span>
+              </h1>
 
-            {/* Subtitle */}
-            <p className="text-slate-600 text-sm sm:text-base font-normal leading-relaxed max-w-lg min-h-[48px]">
-              {currentSlide.subtitle}
-            </p>
+              {/* Subtitle */}
+              <p className="text-slate-600 text-sm sm:text-base font-normal leading-relaxed max-w-lg min-h-[48px]">
+                {currentSlide.subtitle}
+              </p>
 
-            {/* Dual Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3 pt-1">
-              <Link
-                href={currentSlide.primaryCtaHref}
-                className="inline-flex items-center justify-center gap-2.5 bg-navy-950 hover:bg-navy-900 text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-full border border-gold-400/40 shadow-card hover:shadow-hover hover:border-gold-400 hover:-translate-y-0.5 transition-all duration-300 group"
+              {/* Dual Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3 pt-2">
+                <Link
+                  href={currentSlide.primaryCtaHref}
+                  className="inline-flex items-center justify-center gap-2.5 bg-navy-950 hover:bg-navy-900 text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-full border border-gold-400/40 shadow-card hover:shadow-hover hover:border-gold-400 hover:-translate-y-0.5 transition-all duration-300 group"
+                >
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-gold-600 to-amber-300 text-navy-950 flex items-center justify-center shadow-sm flex-shrink-0 group-hover:rotate-12 transition-transform">
+                    <ArrowRight className="w-3 h-3 text-navy-950" />
+                  </div>
+                  <span>{currentSlide.primaryCtaText}</span>
+                </Link>
+
+                <Link
+                  href={currentSlide.secondaryCtaHref}
+                  className="inline-flex items-center justify-center gap-2 bg-white hover:bg-ivory-50 text-navy-900 font-semibold text-xs sm:text-sm px-6 py-3.5 rounded-full border border-border-muted hover:border-gold-400 shadow-sm transition-all duration-300"
+                >
+                  <span>{currentSlide.secondaryCtaText}</span>
+                </Link>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Destination Quick Selector Pills */}
+          <div className="pt-8 flex items-center gap-1.5 overflow-x-auto scrollbar-none">
+            {HERO_SLIDES.map((slide, idx) => (
+              <button
+                key={slide.id}
+                onClick={() => setCurrentSlideIndex(idx)}
+                className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-1.5 ${
+                  idx === currentSlideIndex
+                    ? "bg-navy-950 text-white shadow-md border border-gold-400/40 scale-105"
+                    : "bg-white/90 text-slate-600 hover:text-navy-950 border border-slate-200/80 hover:border-gold-400"
+                }`}
               >
-                <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-gold-600 to-amber-300 text-navy-950 flex items-center justify-center shadow-sm flex-shrink-0 group-hover:rotate-12 transition-transform">
-                  <ArrowRight className="w-3 h-3 text-navy-950" />
-                </div>
-                <span>{currentSlide.primaryCtaText}</span>
-              </Link>
-
-              <Link
-                href={currentSlide.secondaryCtaHref}
-                className="inline-flex items-center justify-center gap-2 bg-white hover:bg-ivory-50 text-navy-900 font-semibold text-xs sm:text-sm px-6 py-3.5 rounded-full border border-border-muted hover:border-gold-400 shadow-sm transition-all duration-300"
-              >
-                <span>{currentSlide.secondaryCtaText}</span>
-              </Link>
-            </div>
+                <span>{slide.flag}</span>
+                <span className="text-[11px] font-medium">{slide.country.split(" ")[0]}</span>
+              </button>
+            ))}
           </div>
         </div>
       </div>

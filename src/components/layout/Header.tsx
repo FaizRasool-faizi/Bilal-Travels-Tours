@@ -69,13 +69,23 @@ export default function Header({ onOpenMobileNav }: HeaderProps) {
             </span>
           </div>
           <div className="hidden sm:flex items-center gap-6 text-slate-300">
-            <a
-              href="tel:+923065602040"
-              className="flex items-center gap-1.5 hover:text-gold-400 transition-colors"
-            >
+            <div className="flex items-center gap-2">
               <Phone className="w-3.5 h-3.5 text-gold-500" />
-              <span>Dedicated Support: 0306 5602040</span>
-            </a>
+              <span className="text-slate-400">Support:</span>
+              <a
+                href="tel:+923065602040"
+                className="hover:text-gold-400 transition-colors font-medium text-white"
+              >
+                0306 5602040
+              </a>
+              <span className="text-navy-700">/</span>
+              <a
+                href="tel:+923144310865"
+                className="hover:text-gold-400 transition-colors font-medium text-white"
+              >
+                0314 4310865
+              </a>
+            </div>
             <span className="text-navy-700">|</span>
             <Link
               href="/my-journey"

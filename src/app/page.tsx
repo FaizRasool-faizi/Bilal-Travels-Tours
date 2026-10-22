@@ -20,12 +20,13 @@ import QuickAssessmentSection from "@/components/home/QuickAssessmentSection";
 import VisaHubSection from "@/components/home/VisaHubSection";
 import HowItWorksSection from "@/components/home/HowItWorksSection";
 import FeaturedToursSection from "@/components/home/FeaturedToursSection";
-import InteractiveMapSection from "@/components/home/InteractiveMapSection";
+import ThreeDInteractiveGlobe from "@/components/home/ThreeDInteractiveGlobe";
 import UmrahShowcaseSection from "@/components/home/UmrahShowcaseSection";
 import WhyChooseUsSection from "@/components/home/WhyChooseUsSection";
 import HomeReviewsSection from "@/components/home/HomeReviewsSection";
 import HomeFaqSection from "@/components/home/HomeFaqSection";
 import FinalCtaSection from "@/components/home/FinalCtaSection";
+import Card3D from "@/components/ui/Card3D";
 
 export default function HomePage() {
   const POPULAR_DESTINATIONS = [
@@ -124,12 +125,15 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* 6 Curated Destination Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        {/* 6 Curated Destination Cards Grid with 3D Tilt & Glare */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 perspective-1000">
           {POPULAR_DESTINATIONS.map((dest, idx) => (
-            <div
+            <Card3D
               key={idx}
-              className="group relative h-[360px] sm:h-[390px] rounded-2xl overflow-hidden shadow-card hover:shadow-hover transition-all duration-500"
+              maxTilt={14}
+              glareOpacity={0.35}
+              glareColor="gold"
+              className="h-[370px] sm:h-[400px] rounded-3xl overflow-hidden shadow-[0_15px_35px_rgba(0,0,0,0.15)] hover:shadow-[0_25px_50px_rgba(0,0,0,0.25)] transition-shadow duration-500"
             >
               <div
                 className="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700"
@@ -139,36 +143,36 @@ export default function HomePage() {
               ></div>
               <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/40 to-transparent"></div>
 
-              {/* Top Country Tag */}
-              <div className="absolute top-5 left-5 flex items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 bg-navy-950/80 backdrop-blur-md text-white text-[11px] font-bold tracking-wider px-3.5 py-1.5 rounded-full border border-white/10 uppercase">
+              {/* Top Country Tag (Pops out in 3D) */}
+              <div className="absolute top-5 left-5 flex items-center gap-2 translate-z-30">
+                <span className="inline-flex items-center gap-1.5 bg-navy-950/85 backdrop-blur-md text-white text-[11px] font-bold tracking-wider px-3.5 py-1.5 rounded-full border border-white/10 uppercase shadow-md">
                   <MapPin className="w-3 h-3 text-gold-400" />
                   {dest.country}
                 </span>
-                <span className="bg-gold-500/90 text-navy-950 text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                <span className="bg-gold-500/95 text-navy-950 text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md">
                   {dest.visaInfo}
                 </span>
               </div>
 
-              {/* Bottom Card Content */}
-              <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
-                <div className="space-y-1 max-w-[80%]">
-                  <h3 className="font-serif text-2xl sm:text-2xl text-white">
+              {/* Bottom Card Content (Pops out in 3D) */}
+              <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between translate-z-30">
+                <div className="space-y-1.5 max-w-[80%]">
+                  <h3 className="font-serif text-2xl text-white tracking-wide drop-shadow-md">
                     {dest.city}
                   </h3>
-                  <p className="text-xs text-ivory-200/90 font-normal line-clamp-1">
+                  <p className="text-xs text-ivory-200/90 font-normal line-clamp-1 drop-shadow-sm">
                     {dest.tagline}
                   </p>
                 </div>
                 <Link
                   href={dest.href}
-                  className="w-11 h-11 rounded-full bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-gold-500 group-hover:text-navy-950 group-hover:border-gold-500 transition-all duration-300 flex-shrink-0"
+                  className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-gold-500 group-hover:text-navy-950 group-hover:border-gold-500 group-hover:scale-110 shadow-lg transition-all duration-300 flex-shrink-0"
                   aria-label={`View ${dest.city} tours`}
                 >
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
-            </div>
+            </Card3D>
           ))}
         </div>
       </section>
@@ -179,9 +183,9 @@ export default function HomePage() {
       <VisaHubSection />
 
       {/* =========================================================================
-          6. INTERACTIVE WORLD & REGIONAL DESTINATION MAP & DIRECTORY
+          6. INTERACTIVE 3D WORLD GLOBE & FLIGHT ROUTE DIRECTORY (THREE.JS)
       ========================================================================= */}
-      <InteractiveMapSection />
+      <ThreeDInteractiveGlobe />
 
       {/* =========================================================================
           7. SACRED UMRAH & ZIYARAT SHOWCASE (VIP CLOCK TOWER, EXECUTIVE, ECONOMY)
@@ -230,17 +234,21 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-4 text-xs font-bold text-gold-400">
-            <a
-              href="tel:+923065602040"
-              className="hover:underline flex items-center gap-1.5 text-white"
-            >
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-3 text-xs font-bold text-gold-400">
+            <span className="flex items-center gap-1.5 text-white">
               <Phone className="w-3.5 h-3.5 text-gold-400" />
-              <span>Direct Hotline: 0306 5602040</span>
-            </a>
-            <span className="text-slate-500">|</span>
-            <Link href="/contact" className="hover:text-gold-300 underline">
-              Gulberg III, Lahore Office
+              <span>Direct Hotlines:</span>
+              <a href="tel:+923065602040" className="hover:text-gold-300 underline">
+                0306 5602040
+              </a>
+              <span className="text-slate-500">/</span>
+              <a href="tel:+923144310865" className="hover:text-gold-300 underline">
+                0314 4310865
+              </a>
+            </span>
+            <span className="text-slate-500 hidden sm:inline">|</span>
+            <Link href="/contact" className="hover:text-gold-300 underline text-slate-200">
+              Chungi Amar Sidhu, Lahore Office
             </Link>
           </div>
         </div>

@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   Sparkles,
 } from "lucide-react";
+import Card3D from "@/components/ui/Card3D";
 
 interface ServiceCard {
   id: string;
@@ -112,14 +113,17 @@ export default function ServicesOverviewSection() {
           </p>
         </div>
 
-        {/* 4 Service Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* 4 Service Cards Grid with 3D Tilt */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 perspective-1000">
           {CORE_SERVICES.map((srv) => {
             const Icon = srv.icon;
             return (
-              <div
+              <Card3D
                 key={srv.id}
-                className="group bg-white rounded-2xl overflow-hidden border border-border-muted hover:border-gold-400 hover:shadow-card transition-all duration-300 flex flex-col justify-between"
+                maxTilt={12}
+                glareOpacity={0.3}
+                glareColor="gold"
+                className="bg-white rounded-3xl overflow-hidden border border-border-muted hover:border-gold-400 shadow-card hover:shadow-[0_20px_45px_rgba(0,0,0,0.18)] transition-all duration-300 flex flex-col justify-between"
               >
                 {/* Visual Image Header */}
                 <div className="relative h-44 overflow-hidden">
@@ -129,21 +133,21 @@ export default function ServicesOverviewSection() {
                   ></div>
                   <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/40 to-transparent"></div>
 
-                  {/* Top Badge */}
-                  <div className="absolute top-3 left-3">
-                    <span className="bg-navy-950/85 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full border border-white/10 uppercase tracking-wider">
+                  {/* Top Badge (Pops out in 3D) */}
+                  <div className="absolute top-3.5 left-3.5 translate-z-30">
+                    <span className="bg-navy-950/85 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full border border-white/10 uppercase tracking-wider shadow-md">
                       {srv.badge}
                     </span>
                   </div>
 
-                  {/* Icon badge floating at bottom right of image */}
-                  <div className="absolute bottom-3 right-3 w-10 h-10 rounded-xl bg-gold-500 text-navy-950 flex items-center justify-center shadow-md">
-                    <Icon className="w-5 h-5 stroke-[2]" />
+                  {/* Icon badge floating at bottom right of image (Pops out in 3D) */}
+                  <div className="absolute bottom-3.5 right-3.5 w-11 h-11 rounded-2xl bg-gradient-to-tr from-gold-600 to-amber-300 text-navy-950 flex items-center justify-center shadow-lg translate-z-40 group-hover:rotate-6 transition-transform">
+                    <Icon className="w-5 h-5 stroke-[2.2]" />
                   </div>
                 </div>
 
-                {/* Card Content */}
-                <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                {/* Card Content (Pops out in 3D) */}
+                <div className="p-5 flex-1 flex flex-col justify-between space-y-4 translate-z-20">
                   <div className="space-y-2.5">
                     <h3 className="font-serif font-bold text-navy-900 text-lg group-hover:text-gold-600 transition-colors">
                       {srv.title}
@@ -177,7 +181,7 @@ export default function ServicesOverviewSection() {
                     </Link>
                   </div>
                 </div>
-              </div>
+              </Card3D>
             );
           })}
         </div>

@@ -210,7 +210,7 @@ export default function DestinationsPage() {
               Plan Custom Itinerary
             </Link>
             <a
-              href="https://wa.me/923000000000"
+              href="https://wa.me/923065602040"
               target="_blank"
               rel="noopener noreferrer"
               className="border border-white/20 hover:border-gold-400 text-white hover:text-gold-400 px-6 py-3.5 rounded-full text-sm transition-all text-center w-full sm:w-auto"

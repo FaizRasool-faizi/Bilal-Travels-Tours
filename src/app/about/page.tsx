@@ -150,7 +150,7 @@ export default function AboutPage() {
                   <div>
                     <h4 className="font-bold text-navy-900">Principal Office — Lahore</h4>
                     <p className="text-xs text-slate-600 mt-0.5">
-                      Main Boulevard, Gulberg III, Lahore, Punjab, Pakistan
+                      1 Minar wali Masjid, Kacha Jail road, Chungi Amar Sidhu Lahore, Pakistan
                     </p>
                     <p className="text-xs text-slate-500 mt-1">Hours: Mon – Sat: 10:00 AM – 7:00 PM</p>
                   </div>
@@ -161,7 +161,14 @@ export default function AboutPage() {
                   <div>
                     <h4 className="font-bold text-navy-900">Dedicated Helplines</h4>
                     <p className="text-xs text-slate-600 mt-0.5">
-                      Phone: +92 (300) 000-0000 | +92 (42) 3578-0000
+                      Phone:{" "}
+                      <a href="tel:+923065602040" className="hover:text-gold-600 font-medium">
+                        0306 5602040
+                      </a>
+                      {" / "}
+                      <a href="tel:+923144310865" className="hover:text-gold-600 font-medium">
+                        0314 4310865
+                      </a>
                     </p>
                     <p className="text-xs text-slate-500 mt-1">
                       Official Email: info@bilaltravels.pk

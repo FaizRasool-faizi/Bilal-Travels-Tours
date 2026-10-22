@@ -59,7 +59,7 @@ export default function VisaPage() {
 
           <div className="flex items-center gap-3">
             <a
-              href="tel:+923000000000"
+              href="tel:+923065602040"
               className="inline-flex items-center gap-2 bg-navy-900 hover:bg-navy-800 text-white font-bold px-6 py-3 rounded-full text-sm shadow-soft transition-all"
             >
               <Phone className="w-4 h-4 text-gold-400" />

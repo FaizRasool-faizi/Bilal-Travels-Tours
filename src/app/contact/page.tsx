@@ -63,7 +63,7 @@ export default function ContactPage() {
 
           <div className="flex items-center gap-3">
             <a
-              href="https://wa.me/923000000000?text=Hello%20Bilal%20Travels%2C%20I%20would%20like%20to%20plan%20a%20trip"
+              href="https://wa.me/923065602040?text=Hello%20Bilal%20Travels%2C%20I%20would%20like%20to%20plan%20a%20trip"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-full text-sm shadow-soft transition-all"
@@ -327,33 +327,51 @@ export default function ContactPage() {
               </div>
 
               <div className="space-y-4 text-xs sm:text-sm">
-                <a
-                  href="tel:+923000000000"
-                  className="flex items-start gap-3 p-3.5 rounded-xl bg-navy-900 hover:bg-navy-800 border border-navy-700/60 transition-colors"
-                >
+                <div className="flex items-start gap-3 p-3.5 rounded-xl bg-navy-900 border border-navy-700/60">
                   <Phone className="w-5 h-5 text-gold-400 mt-0.5 flex-shrink-0" />
                   <div>
                     <span className="text-[10px] text-slate-400 uppercase tracking-wider block">
-                      Direct Hotline
+                      Direct Helplines
                     </span>
-                    <span className="font-bold text-white text-sm">+92 (300) 000-0000</span>
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mt-0.5">
+                      <a href="tel:+923065602040" className="font-bold text-white text-sm hover:text-gold-400 transition-colors">
+                        0306 5602040
+                      </a>
+                      <span className="text-slate-600 hidden sm:inline">|</span>
+                      <a href="tel:+923144310865" className="font-bold text-white text-sm hover:text-gold-400 transition-colors">
+                        0314 4310865
+                      </a>
+                    </div>
                   </div>
-                </a>
+                </div>
 
-                <a
-                  href="https://wa.me/923000000000"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-start gap-3 p-3.5 rounded-xl bg-emerald-950/70 hover:bg-emerald-900 border border-emerald-600/40 transition-colors"
-                >
+                <div className="flex items-start gap-3 p-3.5 rounded-xl bg-emerald-950/70 border border-emerald-600/40">
                   <MessageCircle className="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" />
                   <div>
                     <span className="text-[10px] text-emerald-300 uppercase tracking-wider block">
-                      WhatsApp Business
+                      WhatsApp Support
                     </span>
-                    <span className="font-bold text-white text-sm">Chat on WhatsApp</span>
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mt-0.5">
+                      <a
+                        href="https://wa.me/923065602040"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-bold text-white text-sm hover:text-emerald-300 transition-colors"
+                      >
+                        0306 5602040
+                      </a>
+                      <span className="text-emerald-700 hidden sm:inline">|</span>
+                      <a
+                        href="https://wa.me/923144310865"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-bold text-white text-sm hover:text-emerald-300 transition-colors"
+                      >
+                        0314 4310865
+                      </a>
+                    </div>
                   </div>
-                </a>
+                </div>
 
                 <a
                   href="mailto:info@bilaltravels.pk"
@@ -392,10 +410,10 @@ export default function ContactPage() {
                 Bilal Travels &amp; Tours
               </h4>
               <p className="text-slate-600 text-xs leading-relaxed">
-                Suite 402, Main Boulevard, Gulberg III, Lahore, Punjab 54000, Pakistan.
+                1 Minar wali Masjid, Kacha Jail road, Chungi Amar Sidhu Lahore, Pakistan.
               </p>
               <div className="pt-2 text-xs text-gold-600 font-semibold">
-                ✓ Free valet parking available for visiting clients
+                ✓ Free parking &amp; in-person consultations available
               </div>
             </div>
           </div>
