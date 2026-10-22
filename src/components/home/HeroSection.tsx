@@ -6,10 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
   Sparkles,
-  ChevronLeft,
-  ChevronRight,
   CheckCircle2,
-  Compass,
 } from "lucide-react";
 import Hologram3DPass from "@/components/ui/Hologram3DPass";
 
@@ -29,6 +26,7 @@ interface HeroSlide {
   primaryCtaHref: string;
   secondaryCtaText: string;
   secondaryCtaHref: string;
+  animType: "zoom-in" | "zoom-out" | "pan-left" | "pan-right" | "pan-up";
 }
 
 const HERO_SLIDES: HeroSlide[] = [
@@ -49,6 +47,7 @@ const HERO_SLIDES: HeroSlide[] = [
     primaryCtaHref: "/umrah",
     secondaryCtaText: "Plan Sacred Journey",
     secondaryCtaHref: "/contact?intent=umrah",
+    animType: "zoom-in",
   },
   {
     id: "madina",
@@ -67,6 +66,7 @@ const HERO_SLIDES: HeroSlide[] = [
     primaryCtaHref: "/umrah",
     secondaryCtaText: "Book Pilgrimage",
     secondaryCtaHref: "/contact?intent=umrah",
+    animType: "pan-left",
   },
   {
     id: "dubai",
@@ -85,6 +85,7 @@ const HERO_SLIDES: HeroSlide[] = [
     primaryCtaHref: "/tours?destination=dubai",
     secondaryCtaText: "Instant Visa Help",
     secondaryCtaHref: "/visa",
+    animType: "zoom-out",
   },
   {
     id: "switzerland",
@@ -103,6 +104,7 @@ const HERO_SLIDES: HeroSlide[] = [
     primaryCtaHref: "/tours?destination=switzerland",
     secondaryCtaText: "Schengen Visa",
     secondaryCtaHref: "/visa",
+    animType: "pan-up",
   },
   {
     id: "paris",
@@ -121,6 +123,7 @@ const HERO_SLIDES: HeroSlide[] = [
     primaryCtaHref: "/tours?destination=paris",
     secondaryCtaText: "Plan European Tour",
     secondaryCtaHref: "/contact?intent=plan-trip",
+    animType: "pan-right",
   },
   {
     id: "london",
@@ -139,6 +142,7 @@ const HERO_SLIDES: HeroSlide[] = [
     primaryCtaHref: "/tours?destination=uk",
     secondaryCtaText: "UK Visa Consultancy",
     secondaryCtaHref: "/visa",
+    animType: "zoom-in",
   },
   {
     id: "istanbul",
@@ -157,6 +161,7 @@ const HERO_SLIDES: HeroSlide[] = [
     primaryCtaHref: "/tours?destination=turkey",
     secondaryCtaText: "Custom Itinerary",
     secondaryCtaHref: "/contact?intent=plan-trip",
+    animType: "pan-left",
   },
   {
     id: "baku",
@@ -175,6 +180,7 @@ const HERO_SLIDES: HeroSlide[] = [
     primaryCtaHref: "/tours?destination=azerbaijan",
     secondaryCtaText: "Easy e-Visa in 3 Days",
     secondaryCtaHref: "/visa",
+    animType: "pan-up",
   },
   {
     id: "malaysia",
@@ -193,20 +199,58 @@ const HERO_SLIDES: HeroSlide[] = [
     primaryCtaHref: "/tours?destination=malaysia",
     secondaryCtaText: "Plan Honeymoon",
     secondaryCtaHref: "/contact?intent=plan-trip",
+    animType: "zoom-out",
   },
 ];
+
+// Helper to calculate distinct animation variants for each slide
+function getSlideAnimationVariants(animType: HeroSlide["animType"]) {
+  switch (animType) {
+    case "zoom-in":
+      return {
+        initial: { opacity: 0, scale: 1.0 },
+        animate: { opacity: 1, scale: 1.07 },
+        exit: { opacity: 0, scale: 1.1 },
+        transition: { duration: 1.2, ease: "easeInOut" as const },
+      };
+    case "zoom-out":
+      return {
+        initial: { opacity: 0, scale: 1.1 },
+        animate: { opacity: 1, scale: 1.0 },
+        exit: { opacity: 0, scale: 0.96 },
+        transition: { duration: 1.2, ease: "easeInOut" as const },
+      };
+    case "pan-left":
+      return {
+        initial: { opacity: 0, x: 45, scale: 1.04 },
+        animate: { opacity: 1, x: 0, scale: 1.0 },
+        exit: { opacity: 0, x: -35, scale: 1.04 },
+        transition: { duration: 1.2, ease: "easeOut" as const },
+      };
+    case "pan-right":
+      return {
+        initial: { opacity: 0, x: -45, scale: 1.04 },
+        animate: { opacity: 1, x: 0, scale: 1.0 },
+        exit: { opacity: 0, x: 35, scale: 1.04 },
+        transition: { duration: 1.2, ease: "easeOut" as const },
+      };
+    case "pan-up":
+      return {
+        initial: { opacity: 0, y: 35, scale: 1.03 },
+        animate: { opacity: 1, y: 0, scale: 1.0 },
+        exit: { opacity: 0, y: -25, scale: 1.05 },
+        transition: { duration: 1.2, ease: "easeOut" as const },
+      };
+  }
+}
 
 export default function HeroSection() {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
-  const SLIDE_DURATION_MS = 5000; // 5 seconds rotation
+  const SLIDE_DURATION_MS = 5500; // 5.5s smooth rotation
 
   const handleNext = useCallback(() => {
     setCurrentSlideIndex((prev) => (prev + 1) % HERO_SLIDES.length);
-  }, []);
-
-  const handlePrev = useCallback(() => {
-    setCurrentSlideIndex((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
   }, []);
 
   useEffect(() => {
@@ -218,35 +262,25 @@ export default function HeroSection() {
   }, [handleNext, currentSlideIndex]);
 
   const currentSlide = HERO_SLIDES[currentSlideIndex];
+  const slideAnimation = getSlideAnimationVariants(currentSlide.animType);
 
   return (
     <section className="relative min-h-[520px] lg:min-h-[580px] flex items-center bg-[#FAF8F3] overflow-hidden">
-      {/* Top Slide Progress Bar */}
-      <div className="absolute top-0 left-0 right-0 h-[3px] bg-gold-400/20 z-30 overflow-hidden">
-        <motion.div
-          key={`progress-${currentSlideIndex}`}
-          initial={{ width: "0%" }}
-          animate={{ width: "100%" }}
-          transition={{ duration: 5, ease: "linear" }}
-          className="h-full bg-gradient-to-r from-gold-500 via-amber-400 to-gold-600 shadow-[0_0_12px_rgba(200,163,94,0.9)]"
-        />
-      </div>
-
-      {/* Right Background Slideshow with Framer Motion Cross-fade */}
+      {/* Right Background Slideshow with Distinct Framer Motion Animation Variants */}
       <div className="absolute top-0 right-0 bottom-0 w-full lg:w-[65%] select-none overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide.id}
-            initial={{ opacity: 0, scale: 1.06 }}
-            animate={{ opacity: 1, scale: 1.0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            initial={slideAnimation.initial}
+            animate={slideAnimation.animate}
+            exit={slideAnimation.exit}
+            transition={slideAnimation.transition}
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url('${currentSlide.image}')` }}
           />
         </AnimatePresence>
 
-        {/* Ambient Gradient Overlays */}
+        {/* Ambient Gradient Overlays for Seamless Text Readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#FAF8F3] via-[#FAF8F3]/80 to-transparent lg:via-[#FAF8F3]/30 pointer-events-none z-10" />
         <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#FAF8F3]/80 to-transparent pointer-events-none z-10" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#FAF8F3] via-[#FAF8F3]/85 to-transparent pointer-events-none z-10" />
@@ -263,7 +297,7 @@ export default function HeroSection() {
         </div>
 
         {/* Floating Interactive 3D Hologram Travel Pass */}
-        <div className="absolute bottom-16 right-6 z-20 hidden lg:block animate-float-3d">
+        <div className="absolute bottom-10 right-6 z-20 hidden lg:block animate-float-3d">
           <Hologram3DPass
             currentSlideCountry={currentSlide.country}
             destinationCode={
@@ -285,27 +319,9 @@ export default function HeroSection() {
             }
           />
         </div>
-
-        {/* Manual Slideshow Chevron Navigation Controls */}
-        <div className="absolute right-6 top-1/2 -translate-y-1/2 z-30 flex flex-col gap-2.5 hidden sm:flex">
-          <button
-            onClick={handlePrev}
-            aria-label="Previous Slide"
-            className="w-10 h-10 rounded-full bg-navy-950/80 hover:bg-gold-500 text-white hover:text-navy-950 border border-white/20 hover:border-gold-400 flex items-center justify-center backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-110"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            onClick={handleNext}
-            aria-label="Next Slide"
-            className="w-10 h-10 rounded-full bg-navy-950/80 hover:bg-gold-500 text-white hover:text-navy-950 border border-white/20 hover:border-gold-400 flex items-center justify-center backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-110"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </div>
       </div>
 
-      {/* Hero Content (Left Column with Framer Motion transitions) */}
+      {/* Hero Content (Left Column with Framer Motion text reveal) */}
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-8 py-10 sm:py-14 w-full">
         <div className="max-w-xl lg:max-w-2xl">
           <AnimatePresence mode="wait">
@@ -356,16 +372,16 @@ export default function HeroSection() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Destination Quick Selector Pills */}
-          <div className="pt-8 flex items-center gap-1.5 overflow-x-auto scrollbar-none">
+          {/* Destination Quick Selector Pills - Clean Flex Wrap with No Scrollbar */}
+          <div className="pt-8 flex flex-wrap items-center gap-2 max-w-xl">
             {HERO_SLIDES.map((slide, idx) => (
               <button
                 key={slide.id}
                 onClick={() => setCurrentSlideIndex(idx)}
-                className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-1.5 ${
                   idx === currentSlideIndex
                     ? "bg-navy-950 text-white shadow-md border border-gold-400/40 scale-105"
-                    : "bg-white/90 text-slate-600 hover:text-navy-950 border border-slate-200/80 hover:border-gold-400"
+                    : "bg-white/90 text-slate-600 hover:text-navy-950 border border-slate-200/80 hover:border-gold-400 shadow-xs"
                 }`}
               >
                 <span>{slide.flag}</span>
