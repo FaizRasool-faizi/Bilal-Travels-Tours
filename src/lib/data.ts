@@ -51,7 +51,7 @@ export interface VisaService {
   visaType: string;
   processingTime: string;
   validity: string;
-  entryType: "Single Entry" | "Multiple Entry";
+  entryType: "Single Entry" | "Multiple Entry" | "Single / Multiple Entry";
   pricePKR: string;
   embassyFeeNote: string;
   requirements: string[];
