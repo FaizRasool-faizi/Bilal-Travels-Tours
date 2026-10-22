@@ -22,6 +22,7 @@ import {
   Phone,
   Compass,
   Sparkles,
+  X,
 } from "lucide-react";
 import { FLYER_VISA_COUNTRIES, FlyerVisaCountry } from "@/lib/data";
 
@@ -32,6 +33,16 @@ export default function VisaHubSection() {
   const [selectedCategory, setSelectedCategory] = useState<VisaCategoryFilter>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("cards");
+
+  const categoryCounts = useMemo(() => {
+    return {
+      all: FLYER_VISA_COUNTRIES.length,
+      visit: FLYER_VISA_COUNTRIES.filter((c) => c.categories.includes("visit")).length,
+      work: FLYER_VISA_COUNTRIES.filter((c) => c.categories.includes("work")).length,
+      freelance: FLYER_VISA_COUNTRIES.filter((c) => c.categories.includes("freelance")).length,
+      business: FLYER_VISA_COUNTRIES.filter((c) => c.categories.includes("business")).length,
+    };
+  }, []);
 
   const filteredCountries = useMemo(() => {
     return FLYER_VISA_COUNTRIES.filter((country) => {
@@ -310,103 +321,140 @@ export default function VisaHubSection() {
         </div>
 
         {/* =========================================================================
-            2. FILTER CONTROLS + VIEW SWITCHER (CARDS VS OFFICIAL TABLE)
+            2. ELEVATED EXECUTIVE FILTER HUB (CLEAN TIERED ARCHITECTURE)
         ========================================================================= */}
-        <div className="bg-white rounded-3xl p-4 sm:p-6 border border-border-muted shadow-sm space-y-4">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
-            {/* Category Pills */}
-            <div className="flex items-center gap-2 overflow-x-auto w-full lg:w-auto pb-1 sm:pb-0 scrollbar-none">
-              <button
-                onClick={() => setSelectedCategory("all")}
-                className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+        <div className="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200/90 shadow-sm space-y-4">
+          {/* Top Tier: Clean Segmented Category Tabs with Count Chips (No Scrollbar) */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+            <button
+              onClick={() => setSelectedCategory("all")}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                selectedCategory === "all"
+                  ? "bg-navy-950 text-white shadow-md ring-2 ring-navy-950/20"
+                  : "bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/80"
+              }`}
+            >
+              <span>All Countries</span>
+              <span
+                className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
                   selectedCategory === "all"
-                    ? "bg-navy-950 text-white shadow-md ring-2 ring-navy-950/20"
-                    : "bg-ivory-50 text-navy-900 hover:bg-ivory-200 border border-border-muted"
+                    ? "bg-gold-500 text-navy-950 font-black"
+                    : "bg-slate-200 text-slate-700 font-bold"
                 }`}
               >
-                <span>All Countries (14+ Official)</span>
-              </button>
+                {categoryCounts.all}
+              </span>
+            </button>
 
-              <button
-                onClick={() => setSelectedCategory("visit")}
-                className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+            <button
+              onClick={() => setSelectedCategory("visit")}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                selectedCategory === "visit"
+                  ? "bg-navy-950 text-white shadow-md ring-2 ring-navy-950/20"
+                  : "bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/80"
+              }`}
+            >
+              <Plane className="w-3.5 h-3.5 text-gold-500" />
+              <span>Visit &amp; Tourist</span>
+              <span
+                className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
                   selectedCategory === "visit"
-                    ? "bg-navy-950 text-white shadow-md ring-2 ring-navy-950/20"
-                    : "bg-ivory-50 text-navy-900 hover:bg-ivory-200 border border-border-muted"
+                    ? "bg-gold-500 text-navy-950 font-black"
+                    : "bg-slate-200 text-slate-700 font-bold"
                 }`}
               >
-                <Plane className="w-3.5 h-3.5 text-gold-500" />
-                <span>Visit &amp; Tourist Visa</span>
-              </button>
+                {categoryCounts.visit}
+              </span>
+            </button>
 
-              <button
-                onClick={() => setSelectedCategory("work")}
-                className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+            <button
+              onClick={() => setSelectedCategory("work")}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                selectedCategory === "work"
+                  ? "bg-navy-950 text-white shadow-md ring-2 ring-navy-950/20"
+                  : "bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/80"
+              }`}
+            >
+              <Briefcase className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Work &amp; Employment</span>
+              <span
+                className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
                   selectedCategory === "work"
-                    ? "bg-navy-950 text-white shadow-md ring-2 ring-navy-950/20"
-                    : "bg-ivory-50 text-navy-900 hover:bg-ivory-200 border border-border-muted"
+                    ? "bg-gold-500 text-navy-950 font-black"
+                    : "bg-slate-200 text-slate-700 font-bold"
                 }`}
               >
-                <Briefcase className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Work &amp; Employment</span>
-              </button>
+                {categoryCounts.work}
+              </span>
+            </button>
 
-              <button
-                onClick={() => setSelectedCategory("freelance")}
-                className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+            <button
+              onClick={() => setSelectedCategory("freelance")}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                selectedCategory === "freelance"
+                  ? "bg-navy-950 text-white shadow-md ring-2 ring-navy-950/20"
+                  : "bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/80"
+              }`}
+            >
+              <Laptop className="w-3.5 h-3.5 text-blue-600" />
+              <span>Freelance &amp; Nomad</span>
+              <span
+                className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
                   selectedCategory === "freelance"
-                    ? "bg-navy-950 text-white shadow-md ring-2 ring-navy-950/20"
-                    : "bg-ivory-50 text-navy-900 hover:bg-ivory-200 border border-border-muted"
+                    ? "bg-gold-500 text-navy-950 font-black"
+                    : "bg-slate-200 text-slate-700 font-bold"
                 }`}
               >
-                <Laptop className="w-3.5 h-3.5 text-blue-600" />
-                <span>Freelance &amp; Nomad</span>
-              </button>
+                {categoryCounts.freelance}
+              </span>
+            </button>
 
-              <button
-                onClick={() => setSelectedCategory("business")}
-                className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+            <button
+              onClick={() => setSelectedCategory("business")}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                selectedCategory === "business"
+                  ? "bg-navy-950 text-white shadow-md ring-2 ring-navy-950/20"
+                  : "bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/80"
+              }`}
+            >
+              <Building className="w-3.5 h-3.5 text-amber-600" />
+              <span>Business / Multiple</span>
+              <span
+                className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
                   selectedCategory === "business"
-                    ? "bg-navy-950 text-white shadow-md ring-2 ring-navy-950/20"
-                    : "bg-ivory-50 text-navy-900 hover:bg-ivory-200 border border-border-muted"
+                    ? "bg-gold-500 text-navy-950 font-black"
+                    : "bg-slate-200 text-slate-700 font-bold"
                 }`}
               >
-                <Building className="w-3.5 h-3.5 text-amber-600" />
-                <span>Business / Multiple</span>
-              </button>
+                {categoryCounts.business}
+              </span>
+            </button>
+          </div>
+
+          {/* Bottom Toolbar: Live Filter Status + Search + View Switcher */}
+          <div className="pt-4 border-t border-slate-200/80 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+            {/* Status Indicator */}
+            <div className="flex items-center gap-2 text-xs text-slate-600">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>
+                Showing <strong className="text-navy-950 font-bold">{filteredCountries.length}</strong> of {FLYER_VISA_COUNTRIES.length} Official Country Portfolios
+              </span>
+              {(selectedCategory !== "all" || searchQuery) && (
+                <button
+                  onClick={() => {
+                    setSelectedCategory("all");
+                    setSearchQuery("");
+                  }}
+                  className="ml-2 text-gold-700 hover:text-navy-950 underline font-bold text-[11px]"
+                >
+                  Reset Filters
+                </button>
+              )}
             </div>
 
-            {/* View Switcher & Search Bar */}
-            <div className="flex items-center gap-3 w-full lg:w-auto justify-between lg:justify-end">
-              {/* View Switcher Toggle */}
-              <div className="inline-flex p-1 bg-ivory-100 rounded-full border border-border-muted">
-                <button
-                  onClick={() => setViewMode("cards")}
-                  className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
-                    viewMode === "cards"
-                      ? "bg-navy-950 text-white shadow-sm"
-                      : "text-slate-600 hover:text-navy-950"
-                  }`}
-                  title="Grid Cards with destination background photos"
-                >
-                  <LayoutGrid className="w-3.5 h-3.5 text-gold-400" />
-                  <span>Cards View</span>
-                </button>
-                <button
-                  onClick={() => setViewMode("table")}
-                  className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
-                    viewMode === "table"
-                      ? "bg-navy-950 text-white shadow-sm"
-                      : "text-slate-600 hover:text-navy-950"
-                  }`}
-                  title="Official Flyer Matrix Table format"
-                >
-                  <TableIcon className="w-3.5 h-3.5 text-gold-400" />
-                  <span>Poster Table</span>
-                </button>
-              </div>
-
-              {/* Live Search Input */}
+            {/* Right: Search & View Toggle */}
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              {/* Search Field */}
               <div className="relative w-full sm:w-64">
                 <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
@@ -414,8 +462,44 @@ export default function VisaHubSection() {
                   placeholder="Search UAE, Malaysia, Schengen..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 rounded-full border border-border-muted bg-ivory-50 text-xs font-medium text-navy-900 focus:outline-none focus:border-gold-500 focus:bg-white shadow-sm transition-all"
+                  className="w-full pl-9 pr-8 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-medium text-navy-900 focus:outline-none focus:border-gold-500 focus:bg-white shadow-2xs transition-all"
                 />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-navy-950"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+
+              {/* View Switcher Toggle */}
+              <div className="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 w-full sm:w-auto justify-center">
+                <button
+                  onClick={() => setViewMode("cards")}
+                  className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    viewMode === "cards"
+                      ? "bg-navy-950 text-white shadow-xs"
+                      : "text-slate-600 hover:text-navy-950"
+                  }`}
+                  title="Grid Cards with destination background photos"
+                >
+                  <LayoutGrid className="w-3.5 h-3.5 text-gold-400" />
+                  <span>Cards</span>
+                </button>
+                <button
+                  onClick={() => setViewMode("table")}
+                  className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    viewMode === "table"
+                      ? "bg-navy-950 text-white shadow-xs"
+                      : "text-slate-600 hover:text-navy-950"
+                  }`}
+                  title="Official Flyer Matrix Table format"
+                >
+                  <TableIcon className="w-3.5 h-3.5 text-gold-400" />
+                  <span>Table Matrix</span>
+                </button>
               </div>
             </div>
           </div>
