@@ -81,25 +81,36 @@
   animation: fadeInUpSmooth 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Airplane Floating along Golden Flight Path */
-@keyframes flightGlide {
-  0% {
-    transform: translate(0, 0) rotate(28deg);
+/* Floating Micro-Animations for Hero Badges */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
   }
   50% {
-    transform: translate(8px, -6px) rotate(30deg);
-  }
-  100% {
-    transform: translate(0, 0) rotate(28deg);
+    transform: translateY(-8px);
   }
 }
 
-.animate-flight-glide {
-  animation: flightGlide 4.5s ease-in-out infinite;
+.animate-float-slow {
+  animation: floatSlow 4.5s ease-in-out infinite;
   will-change: transform;
 }
 
-/* 30-Second Slide Progress Bar Animation */
+@keyframes floatReverse {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+.animate-float-reverse {
+  animation: floatReverse 5s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* 7-Second Slide Progress Bar Animation */
 @keyframes slideProgressBar {
   0% {
     width: 0%;
@@ -110,7 +121,7 @@
 }
 
 .animate-slide-progress {
-  animation: slideProgressBar 30s linear infinite;
+  animation: slideProgressBar 7.5s linear infinite;
   will-change: width;
 }
 
@@ -121,7 +132,7 @@
   }
   50% {
     opacity: 1;
-    filter: drop-shadow(0 0 6px rgba(200, 163, 94, 0.5));
+    filter: drop-shadow(0 0 8px rgba(200, 163, 94, 0.6));
   }
 }
 

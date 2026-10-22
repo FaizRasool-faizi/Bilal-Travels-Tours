@@ -4,20 +4,26 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
-  Plane,
   Sparkles,
-  MapPin,
+  ChevronLeft,
+  ChevronRight,
+  Star,
+  CheckCircle2,
+  Compass,
 } from "lucide-react";
 
 interface HeroSlide {
   id: string;
   image: string;
   country: string;
+  code: string;
   flag: string;
   categoryBadge: string;
   headlineMain: string;
   headlineAccent: string;
   subtitle: string;
+  highlightSpot: string;
+  quickPerk: string;
   primaryCtaText: string;
   primaryCtaHref: string;
   secondaryCtaText: string;
@@ -29,12 +35,15 @@ const HERO_SLIDES: HeroSlide[] = [
     id: "mecca",
     image: "/images/Mecca.jpeg",
     country: "Saudi Arabia",
+    code: "SA",
     flag: "🇸🇦",
     categoryBadge: "SACRED PILGRIMAGE | 5-STAR CLOCK TOWER | MAKKAH",
     headlineMain: "Sacred Steps Before",
     headlineAccent: "The Holy Kaaba",
     subtitle:
       "Perform your Umrah with divine tranquility. Zero-meter Haram proximity luxury stays, personalized guidance, and official Saudi visa processing.",
+    highlightSpot: "Zero-Meter Clock Tower & Kaaba View",
+    quickPerk: "VIP 5-Star Guided Umrah",
     primaryCtaText: "View Umrah Packages",
     primaryCtaHref: "/umrah",
     secondaryCtaText: "Plan Sacred Journey",
@@ -44,12 +53,15 @@ const HERO_SLIDES: HeroSlide[] = [
     id: "madina",
     image: "/images/Madina_shareef.jpeg",
     country: "Saudi Arabia",
+    code: "SA",
     flag: "🇸🇦",
     categoryBadge: "ZIYARAT & DEVOTION | ROZA-E-RASOOL (PBUH) | MADINAH",
     headlineMain: "The Blessed City of",
     headlineAccent: "Peace & Solace",
     subtitle:
       "Experience heartfelt serenity at the Prophet's Mosque. Luxury hotels steps from Bab as-Salam with escorted historical Islamic Ziyarat tours.",
+    highlightSpot: "Roza-e-Rasool (PBUH) & Sacred Ziyarat",
+    quickPerk: "Escorted Historical Tours",
     primaryCtaText: "Madinah Ziyarat Tours",
     primaryCtaHref: "/umrah",
     secondaryCtaText: "Book Pilgrimage",
@@ -59,12 +71,15 @@ const HERO_SLIDES: HeroSlide[] = [
     id: "dubai",
     image: "/images/dest-dubai.jpg",
     country: "United Arab Emirates",
+    code: "AE",
     flag: "🇦🇪",
     categoryBadge: "FUTURISTIC LUXURY | BURJ KHALIFA & MARINA | DUBAI",
     headlineMain: "Dream Bigger,",
     headlineAccent: "Travel Further",
     subtitle:
       "Marvel at architectural wonders, thrilling desert safaris, and luxury yacht cruises along Dubai Marina. Fast 24-hour e-Visa processing.",
+    highlightSpot: "Burj Khalifa & Marina Yacht Sunset",
+    quickPerk: "24h Express Visa on Done Base",
     primaryCtaText: "Explore Dubai Tours",
     primaryCtaHref: "/tours?destination=dubai",
     secondaryCtaText: "Instant Visa Help",
@@ -74,12 +89,15 @@ const HERO_SLIDES: HeroSlide[] = [
     id: "switzerland",
     image: "/images/dest-switzerland.jpg",
     country: "Switzerland",
+    code: "CH",
     flag: "🇨🇭",
     categoryBadge: "ALPINE MAJESTY | SWISS ALPS & LAKES | SWITZERLAND",
     headlineMain: "Timeless Beauty in",
     headlineAccent: "The Swiss Alps",
     subtitle:
       "Journey aboard the Glacier Express across scenic viaducts, cruise pristine emerald lakes, and explore snowcapped peaks of Jungfraujoch and Titlis.",
+    highlightSpot: "Glacier Express & Jungfraujoch Peak",
+    quickPerk: "Swiss Travel Pass Itinerary",
     primaryCtaText: "Explore Swiss Holidays",
     primaryCtaHref: "/tours?destination=switzerland",
     secondaryCtaText: "Schengen Visa",
@@ -89,12 +107,15 @@ const HERO_SLIDES: HeroSlide[] = [
     id: "paris",
     image: "/images/hero-paris.jpg",
     country: "France",
+    code: "FR",
     flag: "🇫🇷",
     categoryBadge: "EUROPEAN ROMANCE | EIFFEL TOWER & SEINE | PARIS",
     headlineMain: "City of Lights &",
     headlineAccent: "Unrivaled Elegance",
     subtitle:
       "Cruise along the Seine at sunset, marvel at the illuminated Eiffel Tower, and stroll the historic Champs-Élysées with curated luxury itineraries.",
+    highlightSpot: "Eiffel Tower Sunset & Seine River Cruise",
+    quickPerk: "Curated Luxury Honeymoons",
     primaryCtaText: "Paris Vacation Packages",
     primaryCtaHref: "/tours?destination=paris",
     secondaryCtaText: "Plan European Tour",
@@ -104,12 +125,15 @@ const HERO_SLIDES: HeroSlide[] = [
     id: "london",
     image: "/images/hero-london.jpg",
     country: "United Kingdom",
+    code: "GB",
     flag: "🇬🇧",
     categoryBadge: "ROYAL HERITAGE | BIG BEN & THAMES | LONDON",
     headlineMain: "Timeless Charm Along",
     headlineAccent: "The River Thames",
     subtitle:
       "Explore iconic landmarks from Big Ben to the Tower of London, world-class West End shows, and charming English countryside excursions.",
+    highlightSpot: "Big Ben, Westminster & Tower Bridge",
+    quickPerk: "6 Months Multiple Standard Visitor",
     primaryCtaText: "UK Tour Packages",
     primaryCtaHref: "/tours?destination=uk",
     secondaryCtaText: "UK Visa Consultancy",
@@ -119,12 +143,15 @@ const HERO_SLIDES: HeroSlide[] = [
     id: "istanbul",
     image: "/images/hero-istanbul-sunset.jpg",
     country: "Türkiye",
+    code: "TR",
     flag: "🇹🇷",
     categoryBadge: "CROSSROADS OF CIVILIZATION | BOSPHORUS | TÜRKİYE",
     headlineMain: "Where Continents &",
     headlineAccent: "Centuries Meet",
     subtitle:
       "Discover Hagia Sophia, cruise the sparkling Bosphorus, and fly over magical fairy chimneys in Cappadocia with all-inclusive guided packages.",
+    highlightSpot: "Bosphorus Cruise & Cappadocia Valleys",
+    quickPerk: "Urdu Speaking VIP Tour Guides",
     primaryCtaText: "Explore Türkiye Tours",
     primaryCtaHref: "/tours?destination=turkey",
     secondaryCtaText: "Custom Itinerary",
@@ -134,12 +161,15 @@ const HERO_SLIDES: HeroSlide[] = [
     id: "baku",
     image: "/images/hero-baku.jpg",
     country: "Azerbaijan",
+    code: "AZ",
     flag: "🇦🇿",
     categoryBadge: "CASPIAN PEARL | FLAME TOWERS & SILK ROAD | AZERBAIJAN",
     headlineMain: "Modern Wonder on",
     headlineAccent: "The Caspian Sea",
     subtitle:
       "Walk the ancient stone streets of Old City Baku, witness the dazzling Flame Towers, and take scenic mountain rides to the green valleys of Gabala.",
+    highlightSpot: "Flame Towers & Gabala Mountain Cable Car",
+    quickPerk: "3-5 Days Guaranteed E.Visa",
     primaryCtaText: "Baku & Gabala Deals",
     primaryCtaHref: "/tours?destination=azerbaijan",
     secondaryCtaText: "Easy e-Visa in 3 Days",
@@ -149,12 +179,15 @@ const HERO_SLIDES: HeroSlide[] = [
     id: "malaysia",
     image: "/images/seeview_malysia.jpeg",
     country: "Malaysia",
+    code: "MY",
     flag: "🇲🇾",
     categoryBadge: "TROPICAL ESCAPE | ISLANDS & RAINFORESTS | MALAYSIA",
     headlineMain: "Emerald Waters,",
     headlineAccent: "Tropical Bliss",
     subtitle:
       "Unwind on the pristine white-sand shores of Langkawi, take the panoramic SkyCab cable car, and explore the bustling skyline of Kuala Lumpur.",
+    highlightSpot: "Petronas Twin Towers & Langkawi SkyCab",
+    quickPerk: "All-Inclusive Family Holidays",
     primaryCtaText: "Malaysia Family Tours",
     primaryCtaHref: "/tours?destination=malaysia",
     secondaryCtaText: "Plan Honeymoon",
@@ -164,33 +197,50 @@ const HERO_SLIDES: HeroSlide[] = [
 
 export default function HeroSection() {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
-  const SLIDE_DURATION_MS = 30000; // 30 seconds auto-advance
+  const SLIDE_DURATION_MS = 7500; // 7.5 seconds smooth rotation
 
   useEffect(() => {
+    if (isPaused) return;
+
     const timer = setInterval(() => {
       setCurrentSlideIndex((prev) => (prev + 1) % HERO_SLIDES.length);
     }, SLIDE_DURATION_MS);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [isPaused]);
 
   const currentSlide = HERO_SLIDES[currentSlideIndex];
 
+  const handlePrev = () => {
+    setCurrentSlideIndex((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+  };
+
+  const handleNext = () => {
+    setCurrentSlideIndex((prev) => (prev + 1) % HERO_SLIDES.length);
+  };
+
   return (
-    <section className="relative min-h-[460px] lg:min-h-[520px] flex items-center bg-[#FAF8F3] overflow-hidden">
+    <section
+      className="relative min-h-[490px] lg:min-h-[550px] flex items-center bg-[#FAF8F3] overflow-hidden"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
       {/* =========================================================================
-          30-SECOND SLIDE DURATION PROGRESS BAR (TOP HAIRLINE INDICATOR)
+          SLIDE DURATION PROGRESS BAR (TOP HAIRLINE INDICATOR)
       ========================================================================= */}
       <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gold-400/20 z-30 overflow-hidden">
         <div
           key={`progress-${currentSlideIndex}`}
-          className="h-full bg-gradient-to-r from-gold-500 via-amber-400 to-gold-600 animate-slide-progress shadow-[0_0_8px_rgba(200,163,94,0.7)]"
+          className={`h-full bg-gradient-to-r from-gold-500 via-amber-400 to-gold-600 shadow-[0_0_10px_rgba(200,163,94,0.8)] ${
+            isPaused ? "w-full opacity-60" : "animate-slide-progress"
+          }`}
         ></div>
       </div>
 
       {/* =========================================================================
-          RIGHT-SIDE BACKGROUND SLIDESHOW WITH KEN BURNS MOTION & CROSS-FADE (30 SECONDS)
+          RIGHT-SIDE BACKGROUND SLIDESHOW WITH CINEMATIC ZOOM & CROSS-FADE
       ========================================================================= */}
       <div className="absolute top-0 right-0 bottom-0 w-full lg:w-[65%] select-none overflow-hidden">
         {HERO_SLIDES.map((slide, idx) => {
@@ -217,56 +267,89 @@ export default function HeroSection() {
         {/* Left Gradient Fade: Seamless transition into Warm Ivory base */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#FAF8F3] via-[#FAF8F3]/75 to-transparent lg:via-[#FAF8F3]/30 pointer-events-none z-20"></div>
         {/* Top subtle fade */}
-        <div className="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-[#FAF8F3]/80 to-transparent pointer-events-none z-20"></div>
+        <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#FAF8F3]/80 to-transparent pointer-events-none z-20"></div>
         {/* Bottom subtle fade into the pill bar area */}
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#FAF8F3] via-[#FAF8F3]/80 to-transparent pointer-events-none z-20"></div>
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#FAF8F3] via-[#FAF8F3]/80 to-transparent pointer-events-none z-20"></div>
 
-        {/* Golden Orbital Flight Arc & Meridian Lines Overlay with Smooth Airplane Flight */}
-        <div className="absolute inset-0 pointer-events-none hidden md:block z-20">
-          <svg
-            className="absolute right-6 top-6 w-[420px] h-[420px] lg:w-[540px] lg:h-[540px] opacity-35 text-gold-400"
-            viewBox="0 0 500 500"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle cx="250" cy="250" r="210" stroke="currentColor" strokeWidth="1.2" strokeDasharray="4 4" />
-            <ellipse cx="250" cy="250" rx="140" ry="210" stroke="currentColor" strokeWidth="0.8" opacity="0.6" />
-            <ellipse cx="250" cy="250" rx="70" ry="210" stroke="currentColor" strokeWidth="0.8" opacity="0.4" />
-            <line x1="40" y1="250" x2="460" y2="250" stroke="currentColor" strokeWidth="0.8" opacity="0.5" />
-            <path
-              d="M 50 420 Q 240 80 430 70"
-              stroke="#B58B45"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              fill="none"
-              filter="drop-shadow(0 0 8px rgba(181,139,69,0.8))"
-            />
-          </svg>
-
-          {/* Animated Airplane floating smoothly along flight path */}
-          <div className="absolute right-14 top-14 lg:right-24 lg:top-16 text-white drop-shadow-[0_4px_10px_rgba(16,45,79,0.5)] animate-flight-glide">
-            <Plane className="w-7 h-7 fill-white text-navy-900" />
+        {/* =========================================================================
+            ANIMATED FLOATING GLASS CARDS (REPLACED THE AWKWARD WIRES & PLANE)
+        ========================================================================= */}
+        
+        {/* Floating Glass Pill 1: Top Right (99.8% Approval & Fast-Track) */}
+        <div className="absolute top-6 right-6 z-20 hidden md:flex items-center gap-2.5 bg-navy-950/85 backdrop-blur-md px-4 py-2 rounded-full border border-gold-400/30 text-white shadow-xl animate-float-slow">
+          <div className="w-6 h-6 rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center">
+            <CheckCircle2 className="w-4 h-4 text-gold-400" />
+          </div>
+          <div className="text-left text-xs">
+            <span className="font-bold text-white tracking-wide">99.8% Visa Success</span>
+            <span className="text-gold-300 text-[10px] block font-mono">Verified Submissions</span>
           </div>
         </div>
 
-        {/* Current Destination Micro-Badge (Bottom Right) */}
-        <div className="absolute bottom-5 right-6 z-30 hidden sm:flex items-center gap-2 bg-navy-950/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15 text-white shadow-card">
-          <span className="text-sm">{currentSlide.flag}</span>
-          <span className="text-xs font-semibold text-ivory-100 tracking-wide">
-            {currentSlide.country}
-          </span>
-          <span className="text-gold-400 text-xs font-mono">
-            {currentSlideIndex + 1}/{HERO_SLIDES.length}
-          </span>
+        {/* Floating Spotlight Card 2: Lower Right Destination Spotlight */}
+        <div className="absolute bottom-6 right-6 z-20 hidden sm:flex flex-col gap-2 bg-navy-950/90 backdrop-blur-md p-3.5 rounded-2xl border border-white/20 text-white shadow-2xl max-w-xs animate-float-reverse">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <img
+                src={`https://flagcdn.com/w40/${currentSlide.code.toLowerCase()}.png`}
+                alt={currentSlide.country}
+                className="w-5 h-3.5 object-cover rounded shadow-xs"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = "none";
+                }}
+              />
+              <span className="text-xs font-black text-white tracking-wide">
+                {currentSlide.country}
+              </span>
+            </div>
+
+            <span className="inline-flex items-center gap-1 text-[10px] text-emerald-400 font-bold bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-500/30">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Live Feature</span>
+            </span>
+          </div>
+
+          <p className="text-[11px] text-ivory-200 font-medium line-clamp-1">
+            📍 {currentSlide.highlightSpot}
+          </p>
+
+          <div className="flex items-center justify-between pt-1 border-t border-white/10 text-[10px] text-slate-300">
+            <span className="text-gold-300 font-bold flex items-center gap-1">
+              <Star className="w-3 h-3 fill-gold-400 text-gold-400" />
+              <span>4.9/5 Rating</span>
+            </span>
+            <span className="font-mono text-slate-400">
+              {currentSlideIndex + 1}/{HERO_SLIDES.length}
+            </span>
+          </div>
+        </div>
+
+        {/* Interactive Slide Controls: Sleek Glass Chevron Arrows */}
+        <div className="absolute inset-y-0 right-4 z-20 flex items-center justify-between pointer-events-none w-[calc(100%-2rem)] max-w-sm ml-auto">
+          <button
+            onClick={handlePrev}
+            className="w-10 h-10 rounded-full bg-navy-950/70 hover:bg-gold-500 text-white hover:text-navy-950 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 pointer-events-auto shadow-lg hover:scale-110 active:scale-95 group"
+            aria-label="Previous Destination"
+          >
+            <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
+          </button>
+
+          <button
+            onClick={handleNext}
+            className="w-10 h-10 rounded-full bg-navy-950/70 hover:bg-gold-500 text-white hover:text-navy-950 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 pointer-events-auto shadow-lg hover:scale-110 active:scale-95 group"
+            aria-label="Next Destination"
+          >
+            <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+          </button>
         </div>
       </div>
 
       {/* =========================================================================
-          HERO CONTENT (COMPACT, PURE & CLEAN LEFT COLUMN - NO WATERMARK FLAG)
+          HERO CONTENT (CLEAN LEFT COLUMN WITH TYPOGRAPHY & ANIMATIONS)
       ========================================================================= */}
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-8 py-8 sm:py-10 lg:py-12 w-full">
         <div className="max-w-xl lg:max-w-2xl">
-          {/* DYNAMIC TEXT CONTENT WITH SILKY SMOOTH SLIDE ENTRANCE ANIMATION */}
+          {/* DYNAMIC TEXT CONTENT WITH SMOOTH SLIDE ENTRANCE ANIMATION */}
           <div
             key={`content-${currentSlide.id}`}
             className="space-y-4 animate-fade-in-up"
@@ -278,7 +361,7 @@ export default function HeroSection() {
             </div>
 
             {/* Headline */}
-            <h1 className="font-serif text-3xl sm:text-4xl lg:text-[42px] text-navy-900 tracking-tight leading-[1.15]">
+            <h1 className="font-serif text-3xl sm:text-4xl lg:text-[44px] text-navy-900 tracking-tight leading-[1.15]">
               {currentSlide.headlineMain} <br />
               <span className="text-navy-900 font-serif">{currentSlide.headlineAccent}</span>
             </h1>
@@ -292,7 +375,7 @@ export default function HeroSection() {
             <div className="flex flex-wrap items-center gap-3 pt-1">
               <Link
                 href={currentSlide.primaryCtaHref}
-                className="inline-flex items-center justify-center gap-2.5 bg-navy-950 hover:bg-navy-900 text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-full border border-gold-400/40 shadow-card hover:shadow-hover hover:border-gold-400 hover:-translate-y-0.5 transition-all duration-300 group"
+                className="inline-flex items-center justify-center gap-2.5 bg-navy-950 hover:bg-navy-900 text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-full border border-gold-400/40 shadow-card hover:shadow-hover hover:border-gold-400 hover:-translate-y-0.5 transition-all duration-300 group"
               >
                 <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-gold-600 to-amber-300 text-navy-950 flex items-center justify-center shadow-sm flex-shrink-0 group-hover:rotate-12 transition-transform">
                   <ArrowRight className="w-3 h-3 text-navy-950" />
@@ -302,10 +385,30 @@ export default function HeroSection() {
 
               <Link
                 href={currentSlide.secondaryCtaHref}
-                className="inline-flex items-center justify-center gap-2 bg-white/95 hover:bg-white text-navy-900 font-semibold text-xs sm:text-sm px-6 py-3 rounded-full border border-border-muted hover:border-gold-400 shadow-sm transition-all duration-300"
+                className="inline-flex items-center justify-center gap-2 bg-white hover:bg-ivory-50 text-navy-900 font-semibold text-xs sm:text-sm px-6 py-3.5 rounded-full border border-border-muted hover:border-gold-400 shadow-sm transition-all duration-300"
               >
                 <span>{currentSlide.secondaryCtaText}</span>
               </Link>
+            </div>
+
+            {/* Interactive Thumbnail Dots Selector */}
+            <div className="pt-4 flex items-center gap-1.5 flex-wrap">
+              {HERO_SLIDES.map((slide, idx) => {
+                const isActive = idx === currentSlideIndex;
+                return (
+                  <button
+                    key={slide.id}
+                    onClick={() => setCurrentSlideIndex(idx)}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      isActive
+                        ? "w-8 bg-gradient-to-r from-gold-500 to-amber-400 shadow-sm"
+                        : "w-2 bg-slate-300/80 hover:bg-gold-300"
+                    }`}
+                    aria-label={`Jump to slide ${slide.country}`}
+                    title={slide.country}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>
