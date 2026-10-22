@@ -18,6 +18,7 @@ import QuickAssessmentSection from "@/components/home/QuickAssessmentSection";
 import VisaHubSection from "@/components/home/VisaHubSection";
 import HowItWorksSection from "@/components/home/HowItWorksSection";
 import FeaturedToursSection from "@/components/home/FeaturedToursSection";
+import InteractiveMapSection from "@/components/home/InteractiveMapSection";
 import UmrahShowcaseSection from "@/components/home/UmrahShowcaseSection";
 import WhyChooseUsSection from "@/components/home/WhyChooseUsSection";
 import HomeReviewsSection from "@/components/home/HomeReviewsSection";
@@ -209,7 +210,12 @@ export default function HomePage() {
       </section>
 
       {/* =========================================================================
-          7. FEATURED INTERNATIONAL TOUR PACKAGES WITH ITINERARY MODAL
+          7. INTERACTIVE WORLD & REGIONAL DESTINATION MAP & DIRECTORY
+      ========================================================================= */}
+      <InteractiveMapSection />
+
+      {/* =========================================================================
+          8. FEATURED INTERNATIONAL TOUR PACKAGES WITH ITINERARY MODAL
       ========================================================================= */}
       <FeaturedToursSection />
 
