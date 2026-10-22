@@ -16,7 +16,7 @@ export default function WhyChooseUsSection() {
   const stats = [
     { value: "14+", label: "Direct Visa Countries", detail: "E-Visa & Sticker Processing" },
     { value: "10,000+", label: "Happy Travellers", detail: "Families, Couples & Pilgrims" },
-    { value: "99.2%", label: "Visa Approval Rate", detail: "Flawless File Scrutiny" },
+    { value: "100%", label: "File Audit & Checklist", detail: "Prior to Embassy Lodgment" },
     { value: "12+", label: "Years Trusted Heritage", detail: "Licensed in Lahore, Pakistan" },
   ];
 

@@ -76,7 +76,7 @@ const HERO_SLIDES: HeroSlide[] = [
     subtitle:
       "Marvel at architectural wonders, thrilling desert safaris, and luxury yacht cruises along Dubai Marina. Fast 24-hour e-Visa processing.",
     highlightSpot: "Burj Khalifa & Marina Yacht Sunset",
-    quickPerk: "24h Express Visa on Done Base",
+    quickPerk: "24-48h Express Visit Visa Filing",
     primaryCtaText: "Explore Dubai Tours",
     primaryCtaHref: "/tours?destination=dubai",
     secondaryCtaText: "Instant Visa Help",
@@ -166,7 +166,7 @@ const HERO_SLIDES: HeroSlide[] = [
     subtitle:
       "Walk the ancient stone streets of Old City Baku, witness the dazzling Flame Towers, and take scenic mountain rides to the green valleys of Gabala.",
     highlightSpot: "Flame Towers & Gabala Mountain Cable Car",
-    quickPerk: "3-5 Days Guaranteed E.Visa",
+    quickPerk: "3-5 Days Express e-Visa Filing",
     primaryCtaText: "Baku & Gabala Deals",
     primaryCtaHref: "/tours?destination=azerbaijan",
     secondaryCtaText: "Easy e-Visa in 3 Days",
@@ -264,14 +264,14 @@ export default function HeroSection() {
             ANIMATED FLOATING GLASS CARDS (REPLACED THE AWKWARD WIRES & PLANE)
         ========================================================================= */}
         
-        {/* Floating Glass Pill 1: Top Right (99.8% Approval & Fast-Track) */}
+        {/* Floating Glass Pill 1: Top Right (Certified Guidance & Dossier Review) */}
         <div className="absolute top-6 right-6 z-20 hidden md:flex items-center gap-2.5 bg-navy-950/85 backdrop-blur-md px-4 py-2 rounded-full border border-gold-400/30 text-white shadow-xl animate-float-slow">
           <div className="w-6 h-6 rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center">
             <CheckCircle2 className="w-4 h-4 text-gold-400" />
           </div>
           <div className="text-left text-xs">
-            <span className="font-bold text-white tracking-wide">99.8% Visa Success</span>
-            <span className="text-gold-300 text-[10px] block font-mono">Verified Submissions</span>
+            <span className="font-bold text-white tracking-wide">Certified Guidance</span>
+            <span className="text-gold-300 text-[10px] block font-mono">Verified File Preparation</span>
           </div>
         </div>
 

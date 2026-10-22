@@ -161,6 +161,13 @@ export default function Footer() {
               </div>
             </div>
             <div className="flex items-start gap-3">
+              <MapPin className="w-4 h-4 text-gold-400 mt-1 flex-shrink-0" />
+              <div>
+                <p className="text-xs text-slate-400">Head Office</p>
+                <p className="text-xs text-white">Gulberg III, Lahore, Pakistan</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
               <Clock className="w-4 h-4 text-gold-400 mt-1 flex-shrink-0" />
               <div>
                 <p className="text-xs text-slate-400">Operational Hours</p>

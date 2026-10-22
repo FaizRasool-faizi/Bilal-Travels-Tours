@@ -39,9 +39,9 @@ const STEPS = [
   },
   {
     step: "04",
-    title: "Visa Grant & Departure",
+    title: "Visa Decision & Departure",
     description:
-      "Receive your approved E-Visa on PDF or collect your stamped passport. We also arrange your confirmed airline tickets and luxury stays.",
+      "Receive your processed E-Visa on PDF or collect your stamped passport. We also arrange your confirmed airline tickets and luxury stays.",
     icon: PlaneTakeoff,
     badge: "Ready to Fly",
   },
@@ -63,8 +63,8 @@ export default function HowItWorksSection() {
           </h2>
 
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-            No complicated bureaucracy. From first consultation to stamping and departure, our 4-step
-            streamlined roadmap ensures seamless approval.
+            No complicated bureaucracy. From first consultation to submission and departure, our 4-step
+            streamlined roadmap ensures meticulous file preparation and clear updates.
           </p>
         </div>
 

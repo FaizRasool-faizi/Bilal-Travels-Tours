@@ -131,10 +131,12 @@ export default function QuickAssessmentSection() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Destination Country */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-slate-300">
+                <label htmlFor="assessment-destination" className="block text-xs font-bold text-slate-300">
                   2. Destination Country
                 </label>
                 <select
+                  id="assessment-destination"
+                  name="destination"
                   value={selectedCountry}
                   onChange={(e) => setSelectedCountry(e.target.value)}
                   className="w-full bg-white/10 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-400 focus:bg-navy-950 transition-colors"
@@ -149,10 +151,12 @@ export default function QuickAssessmentSection() {
 
               {/* Your Name */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-slate-300">
+                <label htmlFor="assessment-fullname" className="block text-xs font-bold text-slate-300">
                   3. Your Full Name
                 </label>
                 <input
+                  id="assessment-fullname"
+                  name="fullName"
                   type="text"
                   placeholder="e.g. Muhammad Bilal"
                   value={fullName}
@@ -163,10 +167,12 @@ export default function QuickAssessmentSection() {
 
               {/* Departure City */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-slate-300">
+                <label htmlFor="assessment-city" className="block text-xs font-bold text-slate-300">
                   4. Your City in Pakistan
                 </label>
                 <input
+                  id="assessment-city"
+                  name="city"
                   type="text"
                   placeholder="e.g. Lahore / Islamabad / Karachi"
                   value={city}
@@ -177,10 +183,12 @@ export default function QuickAssessmentSection() {
 
               {/* Preferred Date */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-slate-300">
+                <label htmlFor="assessment-travel-date" className="block text-xs font-bold text-slate-300">
                   5. Planned Travel Month
                 </label>
                 <input
+                  id="assessment-travel-date"
+                  name="travelDate"
                   type="text"
                   placeholder="e.g. Next Month / Urgent"
                   value={travelDate}
@@ -195,7 +203,7 @@ export default function QuickAssessmentSection() {
               <div className="flex flex-wrap items-center gap-4 text-[11px] text-slate-300">
                 <span className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                  Official Embassy Verified
+                  Verified Embassy Checklist
                 </span>
                 <span className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
