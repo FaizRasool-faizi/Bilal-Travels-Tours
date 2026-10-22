@@ -5,11 +5,8 @@ import Link from "next/link";
 import {
   ArrowRight,
   Sparkles,
-  ChevronLeft,
-  ChevronRight,
   Star,
   CheckCircle2,
-  Compass,
 } from "lucide-react";
 
 interface HeroSlide {
@@ -213,14 +210,6 @@ export default function HeroSection() {
 
   const currentSlide = HERO_SLIDES[currentSlideIndex];
 
-  const handlePrev = () => {
-    setCurrentSlideIndex((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
-  };
-
-  const handleNext = () => {
-    setCurrentSlideIndex((prev) => (prev + 1) % HERO_SLIDES.length);
-  };
-
   return (
     <section
       className="relative min-h-[490px] lg:min-h-[550px] flex items-center bg-[#FAF8F3] overflow-hidden"
@@ -324,24 +313,6 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Interactive Slide Controls: Sleek Glass Chevron Arrows */}
-        <div className="absolute inset-y-0 right-4 z-20 flex items-center justify-between pointer-events-none w-[calc(100%-2rem)] max-w-sm ml-auto">
-          <button
-            onClick={handlePrev}
-            className="w-10 h-10 rounded-full bg-navy-950/70 hover:bg-gold-500 text-white hover:text-navy-950 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 pointer-events-auto shadow-lg hover:scale-110 active:scale-95 group"
-            aria-label="Previous Destination"
-          >
-            <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
-          </button>
-
-          <button
-            onClick={handleNext}
-            className="w-10 h-10 rounded-full bg-navy-950/70 hover:bg-gold-500 text-white hover:text-navy-950 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 pointer-events-auto shadow-lg hover:scale-110 active:scale-95 group"
-            aria-label="Next Destination"
-          >
-            <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
-          </button>
-        </div>
       </div>
 
       {/* =========================================================================
@@ -389,26 +360,6 @@ export default function HeroSection() {
               >
                 <span>{currentSlide.secondaryCtaText}</span>
               </Link>
-            </div>
-
-            {/* Interactive Thumbnail Dots Selector */}
-            <div className="pt-4 flex items-center gap-1.5 flex-wrap">
-              {HERO_SLIDES.map((slide, idx) => {
-                const isActive = idx === currentSlideIndex;
-                return (
-                  <button
-                    key={slide.id}
-                    onClick={() => setCurrentSlideIndex(idx)}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      isActive
-                        ? "w-8 bg-gradient-to-r from-gold-500 to-amber-400 shadow-sm"
-                        : "w-2 bg-slate-300/80 hover:bg-gold-300"
-                    }`}
-                    aria-label={`Jump to slide ${slide.country}`}
-                    title={slide.country}
-                  />
-                );
-              })}
             </div>
           </div>
         </div>
