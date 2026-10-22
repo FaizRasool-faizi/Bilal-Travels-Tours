@@ -146,8 +146,8 @@ export default function Footer() {
               <Phone className="w-4 h-4 text-gold-400 mt-1 flex-shrink-0" />
               <div>
                 <p className="text-xs text-slate-400">Inquiry &amp; Bookings Hotline</p>
-                <a href="tel:+923000000000" className="hover:text-gold-400 font-medium">
-                  +92 (300) 000-0000
+                <a href="tel:+923065602040" className="hover:text-gold-400 font-medium">
+                  0306 5602040 / +92 306 5602040
                 </a>
               </div>
             </div>

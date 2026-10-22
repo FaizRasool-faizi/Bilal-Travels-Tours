@@ -42,3 +42,89 @@
     background: #9F7635;
   }
 }
+
+/* =========================================================================
+    CINEMATIC HERO & DESTINATIONS ANIMATIONS
+========================================================================= */
+
+/* Cinematic Slow Zoom (Ken Burns Effect) for 30s Slideshow */
+@keyframes kenBurnsSlow {
+  0% {
+    transform: scale(1.0) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.04) translate(-1%, -0.5%);
+  }
+  100% {
+    transform: scale(1.08) translate(-1.5%, -1%);
+  }
+}
+
+.animate-ken-burns {
+  animation: kenBurnsSlow 30s ease-out infinite alternate;
+  will-change: transform;
+}
+
+/* Smooth Slide-In-Up for Dynamic Destination Text */
+@keyframes fadeInUpSmooth {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUpSmooth 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Airplane Floating along Golden Flight Path */
+@keyframes flightGlide {
+  0% {
+    transform: translate(0, 0) rotate(28deg);
+  }
+  50% {
+    transform: translate(8px, -6px) rotate(30deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(28deg);
+  }
+}
+
+.animate-flight-glide {
+  animation: flightGlide 4.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* 30-Second Slide Progress Bar Animation */
+@keyframes slideProgressBar {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.animate-slide-progress {
+  animation: slideProgressBar 30s linear infinite;
+  will-change: width;
+}
+
+/* Subtle Shimmer for Badges */
+@keyframes shimmerPulse {
+  0%, 100% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 6px rgba(200, 163, 94, 0.5));
+  }
+}
+
+.animate-shimmer-pulse {
+  animation: shimmerPulse 3s ease-in-out infinite;
+}

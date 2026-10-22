@@ -10,165 +10,33 @@ import {
   HeartHandshake,
   MapPin,
   Plane,
+  Phone,
 } from "lucide-react";
+
+import HeroSection from "@/components/home/HeroSection";
+import QuickAssessmentSection from "@/components/home/QuickAssessmentSection";
+import VisaHubSection from "@/components/home/VisaHubSection";
+import HowItWorksSection from "@/components/home/HowItWorksSection";
+import FeaturedToursSection from "@/components/home/FeaturedToursSection";
+import UmrahShowcaseSection from "@/components/home/UmrahShowcaseSection";
+import WhyChooseUsSection from "@/components/home/WhyChooseUsSection";
+import HomeReviewsSection from "@/components/home/HomeReviewsSection";
+import HomeFaqSection from "@/components/home/HomeFaqSection";
 
 export default function HomePage() {
   return (
     <div className="bg-ivory-100 overflow-hidden">
       {/* =========================================================================
-          HERO SECTION (Pixel-matched with Provided UI Sample)
+          1. DYNAMIC HERO SECTION (30-Sec Slideshow of World Famous Destinations)
       ========================================================================= */}
-      <section className="relative min-h-[580px] lg:min-h-[660px] flex items-center bg-[#FAF8F3]">
-        {/* Right Side: Panoramic Istanbul Sunset Background with Smooth Left Fade */}
-        <div className="absolute top-0 right-0 bottom-0 w-full lg:w-[65%] pointer-events-none select-none overflow-hidden">
-          <div
-            className="w-full h-full bg-cover bg-right lg:bg-center"
-            style={{
-              backgroundImage: "url('/images/hero-istanbul-sunset.jpg')",
-            }}
-          ></div>
-
-          {/* Left Gradient Fade: Seamless transition into Warm Ivory background */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#FAF8F3] via-[#FAF8F3]/70 to-transparent lg:via-[#FAF8F3]/30"></div>
-          {/* Top subtle fade */}
-          <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#FAF8F3]/80 to-transparent"></div>
-          {/* Bottom subtle fade into the pill bar area */}
-          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#FAF8F3] via-[#FAF8F3]/80 to-transparent"></div>
-
-          {/* Golden Orbital Flight Arc & Meridian Lines Overlay (As in Mockup) */}
-          <div className="absolute inset-0 pointer-events-none hidden md:block">
-            {/* Orbital Globe Meridian Wireframe SVG */}
-            <svg
-              className="absolute right-6 top-8 w-[480px] h-[480px] lg:w-[620px] lg:h-[620px] opacity-40 text-gold-400"
-              viewBox="0 0 500 500"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {/* Outer Globe Circle */}
-              <circle
-                cx="250"
-                cy="250"
-                r="210"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                strokeDasharray="4 4"
-              />
-              <ellipse
-                cx="250"
-                cy="250"
-                rx="140"
-                ry="210"
-                stroke="currentColor"
-                strokeWidth="0.8"
-                opacity="0.6"
-              />
-              <ellipse
-                cx="250"
-                cy="250"
-                rx="70"
-                ry="210"
-                stroke="currentColor"
-                strokeWidth="0.8"
-                opacity="0.4"
-              />
-              <line
-                x1="40"
-                y1="250"
-                x2="460"
-                y2="250"
-                stroke="currentColor"
-                strokeWidth="0.8"
-                opacity="0.5"
-              />
-              <line
-                x1="70"
-                y1="160"
-                x2="430"
-                y2="160"
-                stroke="currentColor"
-                strokeWidth="0.6"
-                opacity="0.4"
-              />
-              <line
-                x1="70"
-                y1="340"
-                x2="430"
-                y2="340"
-                stroke="currentColor"
-                strokeWidth="0.6"
-                opacity="0.4"
-              />
-
-              {/* Glowing Golden Flight Trajectory Arc */}
-              <path
-                d="M 50 420 Q 240 80 430 70"
-                stroke="#B58B45"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                fill="none"
-                filter="drop-shadow(0 0 8px rgba(181,139,69,0.8))"
-              />
-            </svg>
-
-            {/* In-Flight Aeroplane Icon along the Golden Arc */}
-            <div className="absolute right-16 top-16 lg:right-28 lg:top-20 text-white drop-shadow-[0_4px_10px_rgba(16,45,79,0.5)] transform rotate-[28deg]">
-              <Plane className="w-8 h-8 fill-white text-navy-900" />
-            </div>
-          </div>
-        </div>
-
-        {/* Hero Content (Positioned on the Left over the Warm Ivory base) */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 py-16 lg:py-24 w-full">
-          <div className="max-w-xl lg:max-w-2xl space-y-6">
-            {/* Top Category Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-sm border border-gold-300/60 shadow-sm text-gold-700 text-[11px] font-bold tracking-[0.18em] uppercase">
-              <span>International Travel</span>
-              <span className="text-gold-300 font-normal">|</span>
-              <span>Tours</span>
-              <span className="text-gold-300 font-normal">|</span>
-              <span>Visa Consultancy</span>
-              <span className="text-gold-300 font-normal">|</span>
-              <span>Umrah</span>
-            </div>
-
-            {/* Headline */}
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-[68px] text-navy-900 tracking-tight leading-[1.12]">
-              Your Next Chapter, <br />
-              <span className="text-navy-900 font-serif">Beyond Borders</span>
-            </h1>
-
-            {/* Subtitle */}
-            <p className="text-slate-600 text-base sm:text-lg lg:text-xl font-normal leading-relaxed max-w-lg">
-              Discover the world with trusted guidance, seamless services and unforgettable
-              journeys — from iconic destinations to sacred journeys.
-            </p>
-
-            {/* Dual Action Buttons */}
-            <div className="flex flex-wrap items-center gap-4 pt-3">
-              <Link
-                href="/tours"
-                className="inline-flex items-center justify-center gap-2 bg-gold-500 hover:bg-gold-600 text-navy-950 font-bold text-sm sm:text-base px-8 py-3.5 rounded-full shadow-soft hover:shadow-hover hover:-translate-y-0.5 transition-all duration-300"
-              >
-                <span>Explore Journeys</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                href="/contact?intent=plan-trip"
-                className="inline-flex items-center justify-center gap-2 bg-white/90 hover:bg-white text-navy-900 font-semibold text-sm sm:text-base px-8 py-3.5 rounded-full border border-border-muted hover:border-gold-400 shadow-sm transition-all duration-300"
-              >
-                <span>Plan a Trip</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection />
 
       {/* =========================================================================
-          FLOATING PILL CATEGORY SWITCHER (Exact Match with Mockup)
+          2. FLOATING CATEGORY SHORTCUT PILL BAR
       ========================================================================= */}
-      <section className="relative z-20 -mt-7 sm:-mt-8 max-w-4xl mx-auto px-4">
+      <section className="relative z-20 -mt-7 sm:-mt-8 max-w-4xl mx-auto px-4 mb-8">
         <div className="bg-white rounded-full p-2 border border-border-muted shadow-[0_12px_40px_rgba(16,45,79,0.08)] flex flex-col sm:flex-row items-center justify-between gap-1.5">
-          {/* Pill 1: International Tours (Active Navy) */}
+          {/* Pill 1: International Tours */}
           <Link
             href="/tours"
             className="w-full sm:w-auto flex-1 flex items-center justify-center gap-2.5 py-3 px-6 rounded-full bg-navy-900 text-white font-medium text-sm hover:bg-navy-800 transition-all shadow-sm group"
@@ -179,14 +47,14 @@ export default function HomePage() {
           </Link>
 
           {/* Pill 2: Visa Consultancy */}
-          <Link
-            href="/visa"
+          <a
+            href="#visa-hub"
             className="w-full sm:w-auto flex-1 flex items-center justify-center gap-2.5 py-3 px-6 rounded-full text-charcoal-900 font-medium text-sm hover:bg-ivory-100 transition-all group"
           >
             <FileText className="w-4 h-4 text-globe-600" />
-            <span>Visa Consultancy</span>
+            <span>Visa Consultancy (14+ Countries)</span>
             <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
-          </Link>
+          </a>
 
           {/* Pill 3: Umrah */}
           <Link
@@ -196,14 +64,29 @@ export default function HomePage() {
             <span className="w-4 h-4 text-gold-500 font-bold flex items-center justify-center text-xs">
               🕌
             </span>
-            <span>Umrah</span>
+            <span>Umrah &amp; Ziyarat</span>
             <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
       </section>
 
       {/* =========================================================================
-          POPULAR DESTINATIONS SECTION (Exact Match with Mockup)
+          3. INSTANT CLIENT VISA & TOUR ASSESSMENT TOOL (HIGH-CONVERTING LEADS)
+      ========================================================================= */}
+      <QuickAssessmentSection />
+
+      {/* =========================================================================
+          4. OFFICIAL CLIENT FLYER VISA HUB (14+ COUNTRIES: VISIT, WORK, FREELANCE)
+      ========================================================================= */}
+      <VisaHubSection />
+
+      {/* =========================================================================
+          5. HOW IT WORKS: 4-STEP STREAMLINED VISA ROADMAP
+      ========================================================================= */}
+      <HowItWorksSection />
+
+      {/* =========================================================================
+          6. POPULAR DESTINATIONS SPOTLIGHT (3 Iconic Cards)
       ========================================================================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-8 pt-16 sm:pt-20 pb-16 space-y-10">
         <div className="text-center space-y-2">
@@ -231,7 +114,6 @@ export default function HomePage() {
             ></div>
             <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/30 to-transparent"></div>
 
-            {/* Top Badge */}
             <div className="absolute top-5 left-5">
               <span className="inline-flex items-center gap-1.5 bg-navy-950/70 backdrop-blur-md text-white text-[11px] font-bold tracking-wider px-3.5 py-1.5 rounded-full border border-white/10 uppercase">
                 <MapPin className="w-3 h-3 text-gold-400" />
@@ -239,7 +121,6 @@ export default function HomePage() {
               </span>
             </div>
 
-            {/* Bottom Content */}
             <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
               <div>
                 <h3 className="font-serif text-2xl sm:text-3xl text-white">Istanbul</h3>
@@ -248,7 +129,7 @@ export default function HomePage() {
                 </p>
               </div>
               <Link
-                href="/tours?dest=istanbul"
+                href="/tours?destination=turkey"
                 className="w-11 h-11 rounded-full bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-gold-500 group-hover:text-navy-950 group-hover:border-gold-500 transition-all duration-300 flex-shrink-0"
                 aria-label="View Istanbul tours"
               >
@@ -267,7 +148,6 @@ export default function HomePage() {
             ></div>
             <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/30 to-transparent"></div>
 
-            {/* Top Badge */}
             <div className="absolute top-5 left-5">
               <span className="inline-flex items-center gap-1.5 bg-navy-950/70 backdrop-blur-md text-white text-[11px] font-bold tracking-wider px-3.5 py-1.5 rounded-full border border-white/10 uppercase">
                 <MapPin className="w-3 h-3 text-gold-400" />
@@ -275,7 +155,6 @@ export default function HomePage() {
               </span>
             </div>
 
-            {/* Bottom Content */}
             <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
               <div>
                 <h3 className="font-serif text-2xl sm:text-3xl text-white">Dubai</h3>
@@ -284,7 +163,7 @@ export default function HomePage() {
                 </p>
               </div>
               <Link
-                href="/tours?dest=dubai"
+                href="/tours?destination=dubai"
                 className="w-11 h-11 rounded-full bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-gold-500 group-hover:text-navy-950 group-hover:border-gold-500 transition-all duration-300 flex-shrink-0"
                 aria-label="View Dubai tours"
               >
@@ -303,7 +182,6 @@ export default function HomePage() {
             ></div>
             <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/30 to-transparent"></div>
 
-            {/* Top Badge */}
             <div className="absolute top-5 left-5">
               <span className="inline-flex items-center gap-1.5 bg-navy-950/70 backdrop-blur-md text-white text-[11px] font-bold tracking-wider px-3.5 py-1.5 rounded-full border border-white/10 uppercase">
                 <MapPin className="w-3 h-3 text-gold-400" />
@@ -311,7 +189,6 @@ export default function HomePage() {
               </span>
             </div>
 
-            {/* Bottom Content */}
             <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
               <div>
                 <h3 className="font-serif text-2xl sm:text-3xl text-white">Switzerland</h3>
@@ -320,7 +197,7 @@ export default function HomePage() {
                 </p>
               </div>
               <Link
-                href="/tours?dest=switzerland"
+                href="/tours?destination=switzerland"
                 className="w-11 h-11 rounded-full bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-gold-500 group-hover:text-navy-950 group-hover:border-gold-500 transition-all duration-300 flex-shrink-0"
                 aria-label="View Switzerland tours"
               >
@@ -332,81 +209,57 @@ export default function HomePage() {
       </section>
 
       {/* =========================================================================
-          VALUE PROPOSITIONS ROW (Matching Mockup with Circular Gold Line Icons)
+          7. FEATURED INTERNATIONAL TOUR PACKAGES WITH ITINERARY MODAL
       ========================================================================= */}
-      <section className="bg-white border-y border-border-muted py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
-            {/* 1: Trusted & Professional Guidance */}
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-full border border-gold-400/40 bg-gold-50 flex items-center justify-center text-gold-600 flex-shrink-0 shadow-sm">
-                <ShieldCheck className="w-6 h-6 stroke-[1.5]" />
-              </div>
-              <div>
-                <h4 className="font-serif font-bold text-navy-900 text-sm leading-snug">
-                  Trusted &amp; Professional Guidance
-                </h4>
-                <p className="text-slate-500 text-xs mt-1">Your journey, our commitment</p>
-              </div>
-            </div>
-
-            {/* 2: Personalised Travel Solutions */}
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-full border border-gold-400/40 bg-gold-50 flex items-center justify-center text-gold-600 flex-shrink-0 shadow-sm">
-                <Compass className="w-6 h-6 stroke-[1.5]" />
-              </div>
-              <div>
-                <h4 className="font-serif font-bold text-navy-900 text-sm leading-snug">
-                  Personalised Travel Solutions
-                </h4>
-                <p className="text-slate-500 text-xs mt-1">Designed around your dreams</p>
-              </div>
-            </div>
-
-            {/* 3: Global Network & Partnerships */}
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-full border border-gold-400/40 bg-gold-50 flex items-center justify-center text-gold-600 flex-shrink-0 shadow-sm">
-                <Globe className="w-6 h-6 stroke-[1.5]" />
-              </div>
-              <div>
-                <h4 className="font-serif font-bold text-navy-900 text-sm leading-snug">
-                  Global Network &amp; Partnerships
-                </h4>
-                <p className="text-slate-500 text-xs mt-1">More destinations, better experiences</p>
-              </div>
-            </div>
-
-            {/* 4: Dedicated Support */}
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-full border border-gold-400/40 bg-gold-50 flex items-center justify-center text-gold-600 flex-shrink-0 shadow-sm">
-                <HeartHandshake className="w-6 h-6 stroke-[1.5]" />
-              </div>
-              <div>
-                <h4 className="font-serif font-bold text-navy-900 text-sm leading-snug">
-                  Dedicated Support
-                </h4>
-                <p className="text-slate-500 text-xs mt-1">Before, during and after your journey</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FeaturedToursSection />
 
       {/* =========================================================================
-          NAVY BRAND BANNER STRIP (Matching Mockup Sub-footer)
+          8. SACRED UMRAH & ZIYARAT SHOWCASE (VIP CLOCK TOWER, EXECUTIVE, ECONOMY)
       ========================================================================= */}
-      <section className="bg-navy-950 py-5 border-b border-navy-900 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 flex items-center justify-center relative z-10">
-          <div className="flex items-center gap-4 text-center">
-            <span className="hidden sm:block h-px w-16 bg-gold-500/40"></span>
-            <p className="text-xs sm:text-sm font-semibold tracking-[0.25em] text-ivory-200 uppercase">
-              Pakistan&apos;s Trusted Partner for International Travel
+      <UmrahShowcaseSection />
+
+      {/* =========================================================================
+          9. WHY CHOOSE BILAL TRAVELS (CREDENTIALS & IMPACT NUMBERS)
+      ========================================================================= */}
+      <WhyChooseUsSection />
+
+      {/* =========================================================================
+          10. VERIFIED CUSTOMER REVIEWS & STORIES
+      ========================================================================= */}
+      <HomeReviewsSection />
+
+      {/* =========================================================================
+          11. FREQUENTLY ASKED QUESTIONS (FAQ ACCORDION)
+      ========================================================================= */}
+      <HomeFaqSection />
+
+      {/* =========================================================================
+          12. OFFICIAL SUB-FOOTER BRAND STRIP WITH DIRECT HOTLINE
+      ========================================================================= */}
+      <section className="bg-navy-950 py-6 border-b border-navy-900 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10 text-center sm:text-left">
+          <div className="flex items-center gap-3">
+            <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+            <p className="text-xs sm:text-sm font-semibold tracking-[0.18em] text-ivory-200 uppercase">
+              Pakistan&apos;s Trusted Partner for International Travel &amp; Umrah
             </p>
-            <span className="hidden sm:block h-px w-16 bg-gold-500/40"></span>
+          </div>
+
+          <div className="flex items-center gap-4 text-xs font-bold text-gold-400">
+            <a
+              href="tel:+923065602040"
+              className="hover:underline flex items-center gap-1.5 text-white"
+            >
+              <Phone className="w-3.5 h-3.5 text-gold-400" />
+              <span>Direct Hotline: 0306 5602040</span>
+            </a>
+            <span className="text-slate-500">|</span>
+            <Link href="/contact" className="hover:text-gold-300 underline">
+              Gulberg III, Lahore Office
+            </Link>
           </div>
         </div>
 
-        {/* Subtle decorative globe lines on right */}
         <div className="absolute right-4 -bottom-10 opacity-10 pointer-events-none text-gold-400">
           <Globe className="w-32 h-32" />
         </div>
@@ -414,3 +267,4 @@ export default function HomePage() {
     </div>
   );
 }
+
