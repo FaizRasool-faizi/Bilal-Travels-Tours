@@ -35,4 +35,5 @@ next-env.d.ts
 
 # temp files
 public/temp_*.png
+public/screenshot_test.png
 
