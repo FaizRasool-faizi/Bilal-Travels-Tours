@@ -199,6 +199,13 @@ export default function Footer() {
           <Link href="/cancellation" className="hover:text-gold-400 transition-colors">
             Cancellation &amp; Refund Policy
           </Link>
+          <Link
+            href="/admin"
+            className="text-gold-400/90 hover:text-gold-300 font-medium transition-colors flex items-center gap-1.5 border border-gold-500/30 px-2.5 py-0.5 rounded bg-navy-900/80 text-xs shadow-sm hover:border-gold-400"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            Staff / Admin Portal
+          </Link>
         </div>
 
         {/* Developer Credit: XENITH Solutions Pakistan */}
