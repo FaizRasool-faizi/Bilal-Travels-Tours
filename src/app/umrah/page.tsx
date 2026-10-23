@@ -89,10 +89,7 @@ export default function UmrahPage() {
               </div>
 
               <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.15]">
-                Spiritual Umrah{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-amber-200">
-                  Pilgrimage Packages
-                </span>
+                Spiritual Umrah <span className="text-gold-400">Packages</span>
               </h1>
 
               <p className="text-slate-300 text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl font-light">
