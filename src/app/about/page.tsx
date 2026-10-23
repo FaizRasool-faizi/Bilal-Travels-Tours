@@ -143,13 +143,13 @@ export default function AboutPage() {
             <div>
               {/* Top Banner & Photo Area */}
               <div className="relative bg-gradient-to-br from-navy-950 via-[#10243C] to-navy-900 p-6 sm:p-8 text-white flex flex-col sm:flex-row items-center sm:items-start gap-6 border-b border-gold-400/20">
-                <div className="relative w-36 h-44 sm:w-40 sm:h-48 rounded-2xl overflow-hidden border-2 border-gold-400/60 shadow-xl flex-shrink-0 bg-navy-900 group">
+                <div className="relative w-36 h-48 sm:w-44 sm:h-56 rounded-2xl overflow-hidden border-2 border-gold-400/60 shadow-xl flex-shrink-0 bg-navy-900 group">
                   <img
-                    src="/images/chairperson-malik-ahmad-ali.png"
+                    src="/images/chairperson-malik-ahmad-ali.jpg"
                     alt="Malik Ahmad Ali - Chair Person"
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950/40 via-transparent to-transparent pointer-events-none" />
                 </div>
 
                 <div className="text-center sm:text-left space-y-2 flex-1">
@@ -215,13 +215,13 @@ export default function AboutPage() {
             <div>
               {/* Top Banner & Photo Area */}
               <div className="relative bg-gradient-to-br from-navy-950 via-[#10243C] to-navy-900 p-6 sm:p-8 text-white flex flex-col sm:flex-row items-center sm:items-start gap-6 border-b border-gold-400/20">
-                <div className="relative w-36 h-44 sm:w-40 sm:h-48 rounded-2xl overflow-hidden border-2 border-gold-400/60 shadow-xl flex-shrink-0 bg-navy-900 group">
+                <div className="relative w-36 h-48 sm:w-44 sm:h-56 rounded-2xl overflow-hidden border-2 border-gold-400/60 shadow-xl flex-shrink-0 bg-navy-900 group">
                   <img
                     src="/images/ceo-bilal-abbas-saifi.jpg"
                     alt="Malik Bilal Abbas Saifi - Chief Executive Officer"
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950/40 via-transparent to-transparent pointer-events-none" />
                 </div>
 
                 <div className="text-center sm:text-left space-y-2 flex-1">
