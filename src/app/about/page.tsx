@@ -21,6 +21,9 @@ import {
   Clock,
   Briefcase,
   Users,
+  Plane,
+  ExternalLink,
+  Navigation,
 } from "lucide-react";
 import Card3D from "@/components/ui/Card3D";
 
@@ -523,93 +526,289 @@ export default function AboutPage() {
       </section>
 
       {/* =========================================================================
-          4. IN-PERSON OFFICE PRESENCE & VERIFIED ACCREDITATIONS
+          5. ACCREDITED GLOBAL AIRLINE PARTNERS & CONSORTIUMS
+      ========================================================================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-8 mb-20 sm:mb-28">
+        <div className="text-center max-w-2xl mx-auto space-y-3 mb-12 sm:mb-14">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gold-400/50 shadow-sm text-gold-800 text-xs font-bold tracking-widest uppercase">
+            <Plane className="w-3.5 h-3.5 text-gold-600" />
+            <span>Authorized Flight Partnerships</span>
+          </div>
+
+          <h2 className="font-serif text-3xl sm:text-4xl text-navy-950 tracking-tight">
+            Accredited Global Airline Partners
+          </h2>
+
+          <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+            Direct airline seat allocations, discounted group tariffs, and certified Umrah flight
+            arrangements with the world&apos;s leading international carriers.
+          </p>
+        </div>
+
+        {/* Airline Badges Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 perspective-1000 mb-10">
+          {[
+            {
+              name: "Saudia Airlines",
+              iata: "SV",
+              route: "Official Umrah Carrier",
+              hub: "Jeddah & Madinah Direct",
+              badge: "Umrah Partner",
+              color: "text-emerald-700 bg-emerald-50 border-emerald-200",
+            },
+            {
+              name: "Emirates",
+              iata: "EK",
+              route: "Global Luxury Network",
+              hub: "Dubai International Hub",
+              badge: "5-Star Global",
+              color: "text-red-700 bg-red-50 border-red-200",
+            },
+            {
+              name: "Qatar Airways",
+              iata: "QR",
+              route: "Premier World Transit",
+              hub: "Doha International Hub",
+              badge: "World Class",
+              color: "text-purple-800 bg-purple-50 border-purple-200",
+            },
+            {
+              name: "Turkish Airlines",
+              iata: "TK",
+              route: "Europe & Istanbul Gateway",
+              hub: "Istanbul Airport",
+              badge: "Holiday Direct",
+              color: "text-rose-700 bg-rose-50 border-rose-200",
+            },
+            {
+              name: "Pakistan Int. Airlines",
+              iata: "PK",
+              route: "National Flag Carrier",
+              hub: "Direct From Pakistan",
+              badge: "National Carrier",
+              color: "text-emerald-800 bg-emerald-50 border-emerald-200",
+            },
+            {
+              name: "flydubai",
+              iata: "FZ",
+              route: "Middle East Express",
+              hub: "Dubai Connect",
+              badge: "Daily Departures",
+              color: "text-blue-700 bg-blue-50 border-blue-200",
+            },
+            {
+              name: "flynas",
+              iata: "XY",
+              route: "Pilgrim Budget Direct",
+              hub: "Riyadh & Jeddah",
+              badge: "Umrah Saver",
+              color: "text-lime-800 bg-lime-50 border-lime-200",
+            },
+            {
+              name: "Air Arabia",
+              iata: "G9",
+              route: "Regional Gulf Link",
+              hub: "Sharjah International",
+              badge: "Value Flights",
+              color: "text-red-700 bg-red-50 border-red-200",
+            },
+          ].map((airline) => (
+            <Card3D
+              key={airline.name}
+              maxTilt={10}
+              glareOpacity={0.2}
+              glareColor="gold"
+              className="bg-white rounded-2xl p-5 border border-border-muted hover:border-gold-400 shadow-sm hover:shadow-card transition-all flex flex-col justify-between group"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-navy-950 text-gold-400">
+                    {airline.iata}
+                  </span>
+                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${airline.color}`}>
+                    {airline.badge}
+                  </span>
+                </div>
+
+                <div>
+                  <h4 className="font-serif font-bold text-base text-navy-950 group-hover:text-gold-700 transition-colors">
+                    {airline.name}
+                  </h4>
+                  <p className="text-xs text-slate-500 mt-0.5">{airline.route}</p>
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+                <span>{airline.hub}</span>
+                <Plane className="w-3.5 h-3.5 text-gold-500 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Card3D>
+          ))}
+        </div>
+
+        {/* Accreditations Trust Banner */}
+        <div className="bg-gradient-to-r from-navy-950 via-[#0F2036] to-navy-900 rounded-2xl p-6 sm:p-8 text-white border border-gold-400/30 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-gold-400/10 border border-gold-400/30 flex items-center justify-center text-gold-400 flex-shrink-0">
+              <Award className="w-7 h-7" />
+            </div>
+            <div>
+              <h4 className="font-serif text-lg sm:text-xl font-bold text-white">
+                Official Regulatory Accreditations
+              </h4>
+              <p className="text-xs sm:text-sm text-slate-300">
+                Officially recognized by the Ministry of Tourism (Govt of Pakistan DTS) &amp; TAAP.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 text-xs">
+            <span className="px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-gold-300 font-medium">
+              ✓ DTS License Holder
+            </span>
+            <span className="px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-gold-300 font-medium">
+              ✓ TAAP Registered Member
+            </span>
+            <span className="px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-gold-300 font-medium">
+              ✓ Authorized Umrah Ground Network
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          6. IN-PERSON OFFICE PRESENCE WITH INTERACTIVE GOOGLE MAP & 1-CLICK NAVIGATION
       ========================================================================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-8 mb-16">
-        <div className="bg-white rounded-3xl p-8 sm:p-12 border border-border-muted shadow-card">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            <div className="space-y-6">
-              <span className="text-xs uppercase tracking-widest text-gold-600 font-bold block">
-                Physical Presence
-              </span>
-              <h2 className="font-serif text-3xl sm:text-4xl text-navy-950">
-                Visit Us for an In-Person Consultation
-              </h2>
-              <p className="text-slate-600 text-sm leading-relaxed">
-                Prefer to sit down over tea and review your holiday itineraries or visa documents?
-                Our branch office warmly welcomes you throughout the week.
-              </p>
+        <div className="bg-white rounded-3xl p-6 sm:p-10 lg:p-12 border border-border-muted shadow-card">
+          <div className="space-y-3 mb-8 sm:mb-10 text-center sm:text-left">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold-400/10 border border-gold-400/30 text-gold-700 text-xs font-bold tracking-widest uppercase">
+              <MapPin className="w-3.5 h-3.5 text-gold-600" />
+              <span>Physical Presence &amp; Directions</span>
+            </div>
 
+            <h2 className="font-serif text-3xl sm:text-4xl text-navy-950">
+              Visit Us for an In-Person Consultation
+            </h2>
+            <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl">
+              Prefer to sit down over tea and review your holiday itineraries or passport visa documents?
+              Our Lahore branch office warmly welcomes you throughout the week.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
+            {/* Left 5 Cols: Office Details & Navigation CTAs */}
+            <div className="lg:col-span-5 space-y-6 flex flex-col justify-between">
               <div className="space-y-4 text-sm text-slate-700">
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-ivory-50 border border-border-muted">
-                  <MapPin className="w-5 h-5 text-gold-600 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-bold text-navy-900">Principal Office — Lahore</h4>
-                    <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">
-                      1 Minar wali Masjid, Kacha Jail road, Chungi Amar Sidhu Lahore, Pakistan
-                    </p>
-                    <p className="text-xs text-slate-500 mt-1">Hours: Mon – Sat: 10:00 AM – 7:00 PM</p>
+                {/* Office Location Card */}
+                <div className="p-5 rounded-2xl bg-ivory-50 border border-border-muted space-y-2">
+                  <div className="flex items-center gap-2.5 text-navy-900 font-bold">
+                    <Building2 className="w-5 h-5 text-gold-600" />
+                    <h4 className="text-base">Principal Office — Lahore</h4>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed pl-7">
+                    1 Minar wali Masjid, Kacha Jail road, Chungi Amar Sidhu Lahore, Pakistan
+                  </p>
+                  <div className="flex items-center gap-2 text-xs text-slate-500 pt-1 pl-7">
+                    <Clock className="w-4 h-4 text-slate-400" />
+                    <span>Mon – Sat: 10:00 AM – 7:00 PM (Sunday Closed)</span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-ivory-50 border border-border-muted">
-                  <Phone className="w-5 h-5 text-gold-600 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-bold text-navy-900">Dedicated Helplines</h4>
-                    <p className="text-xs text-slate-600 mt-0.5">
-                      Phone:{" "}
-                      <a href="tel:+923065602040" className="hover:text-gold-600 font-medium">
+                {/* Helplines Card */}
+                <div className="p-5 rounded-2xl bg-ivory-50 border border-border-muted space-y-2">
+                  <div className="flex items-center gap-2.5 text-navy-900 font-bold">
+                    <Phone className="w-5 h-5 text-gold-600" />
+                    <h4 className="text-base">Direct Contact &amp; Helplines</h4>
+                  </div>
+                  <div className="pl-7 space-y-1 text-xs sm:text-sm">
+                    <p className="text-slate-600">
+                      Helplines:{" "}
+                      <a href="tel:+923065602040" className="hover:text-gold-600 font-bold text-navy-900">
                         0306 5602040
                       </a>
                       {" / "}
-                      <a href="tel:+923144310865" className="hover:text-gold-600 font-medium">
+                      <a href="tel:+923144310865" className="hover:text-gold-600 font-bold text-navy-900">
                         0314 4310865
                       </a>
                     </p>
-                    <p className="text-xs text-slate-500 mt-1">
-                      Official Email: info@bilaltravels.pk
+                    <p className="text-slate-500 text-xs">
+                      Official Email:{" "}
+                      <a href="mailto:info@bilaltravels.pk" className="hover:text-gold-600">
+                        info@bilaltravels.pk
+                      </a>
                     </p>
                   </div>
+                </div>
+              </div>
+
+              {/* 1-Click Navigation Buttons */}
+              <div className="space-y-3 pt-2">
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=1+Minar+wali+Masjid+Kacha+Jail+road+Chungi+Amar+Sidhu+Lahore"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-navy-950 hover:bg-gold-500 hover:text-navy-950 text-white font-bold py-3.5 px-6 rounded-2xl text-xs sm:text-sm text-center transition-all flex items-center justify-center gap-2.5 shadow-card group"
+                >
+                  <Navigation className="w-4 h-4 text-gold-400 group-hover:text-navy-950 transition-colors" />
+                  <span>Open Live Route in Google Maps</span>
+                  <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+                </a>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <a
+                    href="https://wa.me/923065602040?text=Assalam-o-Alaikum%20Bilal%20Travels,%20I%20am%20visiting%20your%20office%20at%20Chungi%20Amar%20Sidhu."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="py-3 px-4 rounded-xl border border-emerald-600/30 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 font-semibold text-xs text-center flex items-center justify-center gap-2 transition-colors"
+                  >
+                    <span>WhatsApp Desk</span>
+                  </a>
+
+                  <Link
+                    href="/contact?intent=plan-trip"
+                    className="py-3 px-4 rounded-xl border border-gold-400/50 bg-gold-50 text-gold-900 hover:bg-gold-100 font-semibold text-xs text-center flex items-center justify-center gap-1.5 transition-colors"
+                  >
+                    <span>Book Meeting</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-gold-700" />
+                  </Link>
                 </div>
               </div>
             </div>
 
-            {/* Accreditations & Licenses Card */}
-            <div className="bg-ivory-50 rounded-2xl p-6 sm:p-8 border border-border-muted flex flex-col justify-between space-y-6">
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-navy-900">
-                  <Award className="w-4 h-4 text-gold-600" />
-                  <span>Verified Credentials &amp; Affiliations</span>
+            {/* Right 7 Cols: Interactive Embedded Google Map */}
+            <div className="lg:col-span-7">
+              <div className="w-full h-full min-h-[360px] sm:min-h-[420px] rounded-3xl overflow-hidden border-2 border-gold-400/40 shadow-xl relative bg-slate-100 group">
+                <iframe
+                  title="Bilal Travels Principal Office Location"
+                  src="https://maps.google.com/maps?q=1+Minar+wali+Masjid,+Kacha+Jail+road,+Chungi+Amar+Sidhu+Lahore&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                  width="100%"
+                  height="100%"
+                  className="w-full h-full min-h-[360px] sm:min-h-[420px] border-0 filter contrast-[1.05]"
+                  loading="lazy"
+                  allowFullScreen
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+
+                {/* Map Floating Badge */}
+                <div className="absolute top-4 left-4 bg-navy-950/95 backdrop-blur-md text-white px-4 py-2.5 rounded-2xl border border-gold-400/40 shadow-lg pointer-events-none flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-emerald-400 animate-ping" />
+                  <div>
+                    <span className="text-xs font-bold text-white block">Bilal Travels &amp; Tours</span>
+                    <span className="text-[10px] text-gold-400 font-mono">1 Minar wali Masjid, Chungi Amar Sidhu</span>
+                  </div>
                 </div>
 
-                <ul className="space-y-3.5 text-xs sm:text-sm text-slate-700">
-                  <li className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-                    <span>Government of Pakistan DTS License Holder</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-                    <span>Member of Travel Agents Association of Pakistan (TAAP)</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-                    <span>Authorized Umrah Ground Handling Partner in Saudi Arabia</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-                    <span>Certified Turkish &amp; UAE Tourism Specialist</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="pt-4 border-t border-border-muted">
-                <Link
-                  href="/contact?intent=plan-trip"
-                  className="w-full bg-navy-950 hover:bg-gold-500 hover:text-navy-950 text-white font-bold py-3.5 rounded-full text-xs text-center transition-all flex items-center justify-center gap-2 shadow-card"
+                {/* Full Map Action Floating Tab */}
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=1+Minar+wali+Masjid+Kacha+Jail+road+Chungi+Amar+Sidhu+Lahore"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute bottom-4 right-4 bg-white/95 hover:bg-white text-navy-950 text-xs font-bold px-4 py-2 rounded-xl shadow-md border border-slate-200 flex items-center gap-1.5 transition-all hover:scale-105"
                 >
-                  <span>Connect With a Travel Advisor</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+                  <span>View Larger Map</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-gold-600" />
+                </a>
               </div>
             </div>
           </div>
