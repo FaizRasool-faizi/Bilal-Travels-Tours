@@ -20,6 +20,7 @@ import {
   Building2,
   Clock,
   Briefcase,
+  Users,
 } from "lucide-react";
 import Card3D from "@/components/ui/Card3D";
 
@@ -280,7 +281,180 @@ export default function AboutPage() {
       </section>
 
       {/* =========================================================================
-          3. OUR CORE VALUES (3D TILT CARDS)
+          3. OFFICE COORDINATION & OPERATIONS TEAM (ABBAS AHMAD SAIFI & WAQAR AHMAD)
+      ========================================================================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-8 mb-20 sm:mb-28">
+        <div className="text-center max-w-2xl mx-auto space-y-3 mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gold-400/50 shadow-sm text-gold-800 text-xs font-bold tracking-widest uppercase">
+            <Users className="w-3.5 h-3.5 text-gold-600" />
+            <span>Operations &amp; Client Coordination</span>
+          </div>
+
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-[40px] text-navy-950 tracking-tight">
+            Key Office Administration
+          </h2>
+
+          <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+            The dedicated professionals handling daily document processing, client communications,
+            and seamless tour execution at Bilal Travels &amp; Tours.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 perspective-1000">
+          {/* Card 1: Abbas Ahmad Saifi */}
+          <Card3D
+            maxTilt={8}
+            glareOpacity={0.2}
+            glareColor="gold"
+            className="bg-white rounded-3xl border border-border-muted hover:border-gold-400 shadow-card hover:shadow-[0_20px_50px_rgba(0,0,0,0.12)] transition-all duration-500 overflow-hidden flex flex-col justify-between"
+          >
+            <div>
+              <div className="relative bg-gradient-to-br from-navy-950 via-[#10243C] to-navy-900 p-6 sm:p-8 text-white flex flex-col sm:flex-row items-center sm:items-start gap-6 border-b border-gold-400/20">
+                <div className="relative w-36 h-48 sm:w-44 sm:h-56 rounded-2xl overflow-hidden border-2 border-gold-400/60 shadow-xl flex-shrink-0 bg-white group flex items-end justify-center">
+                  <img
+                    src="/images/coordinator-abbas-ahmad-saifi.png"
+                    alt="Abbas Ahmad Saifi - Office Coordinator"
+                    className="w-full h-full object-contain object-bottom group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950/20 via-transparent to-transparent pointer-events-none" />
+                </div>
+
+                <div className="text-center sm:text-left space-y-2 flex-1">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold-400/20 border border-gold-400/40 text-gold-300 text-[10px] font-bold tracking-widest uppercase">
+                    <Briefcase className="w-3 h-3 text-gold-400" />
+                    <span>Office Administration</span>
+                  </div>
+
+                  <h3 className="font-serif text-2xl sm:text-3xl text-white font-bold tracking-tight">
+                    Abbas Ahmad Saifi
+                  </h3>
+
+                  <p className="text-xs text-gold-400/90 font-mono tracking-wide">
+                    Office Coordinator — Bilal Travels &amp; Tours
+                  </p>
+
+                  <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-2 text-[11px] text-slate-300">
+                    <span className="px-2.5 py-1 rounded-md bg-white/10 border border-white/10">
+                      ✓ Client Desk Liaison
+                    </span>
+                    <span className="px-2.5 py-1 rounded-md bg-white/10 border border-white/10">
+                      ✓ Document Verification
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 sm:p-8 space-y-4">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-navy-900 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-gold-600" />
+                  <span>Key Responsibilities &amp; Role</span>
+                </h4>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Oversees the daily coordination of the Lahore head office, managing walk-in client
+                  consultations, document intake for visa processing, and smooth inter-departmental
+                  workflow between the management and travellers.
+                </p>
+
+                <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
+                  <div className="p-3 rounded-xl bg-ivory-50 border border-border-muted">
+                    <span className="font-bold text-navy-900 block">Office Presence</span>
+                    <span className="text-slate-600 text-[11px]">Mon – Sat (Lahore Hub)</span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-ivory-50 border border-border-muted">
+                    <span className="font-bold text-navy-900 block">Direct Inquiry</span>
+                    <a href="tel:+923065602040" className="text-gold-600 font-semibold text-[11px] hover:underline">
+                      0306 5602040
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="px-6 sm:px-8 py-3.5 bg-ivory-50 border-t border-border-muted flex items-center justify-between text-xs text-slate-500">
+              <span className="font-medium text-navy-900">Coordination Desk</span>
+              <span className="text-gold-600 font-mono font-semibold">Lahore Office</span>
+            </div>
+          </Card3D>
+
+          {/* Card 2: Waqar Ahmad */}
+          <Card3D
+            maxTilt={8}
+            glareOpacity={0.2}
+            glareColor="gold"
+            className="bg-white rounded-3xl border border-border-muted hover:border-gold-400 shadow-card hover:shadow-[0_20px_50px_rgba(0,0,0,0.12)] transition-all duration-500 overflow-hidden flex flex-col justify-between"
+          >
+            <div>
+              <div className="relative bg-gradient-to-br from-navy-950 via-[#10243C] to-navy-900 p-6 sm:p-8 text-white flex flex-col sm:flex-row items-center sm:items-start gap-6 border-b border-gold-400/20">
+                <div className="relative w-36 h-48 sm:w-44 sm:h-56 rounded-2xl overflow-hidden border-2 border-gold-400/60 shadow-xl flex-shrink-0 bg-white group flex items-end justify-center">
+                  <img
+                    src="/images/operations-waqar-ahmad.png"
+                    alt="Waqar Ahmad - Operations & Customer Relations"
+                    className="w-full h-full object-contain object-bottom group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950/20 via-transparent to-transparent pointer-events-none" />
+                </div>
+
+                <div className="text-center sm:text-left space-y-2 flex-1">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-bold tracking-widest uppercase">
+                    <Globe className="w-3 h-3 text-emerald-400" />
+                    <span>Operations &amp; Support</span>
+                  </div>
+
+                  <h3 className="font-serif text-2xl sm:text-3xl text-white font-bold tracking-tight">
+                    Waqar Ahmad
+                  </h3>
+
+                  <p className="text-xs text-gold-400/90 font-mono tracking-wide">
+                    Operations &amp; Client Support — Bilal Travels
+                  </p>
+
+                  <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-2 text-[11px] text-slate-300">
+                    <span className="px-2.5 py-1 rounded-md bg-white/10 border border-white/10">
+                      ✓ Tour Logistics
+                    </span>
+                    <span className="px-2.5 py-1 rounded-md bg-white/10 border border-white/10">
+                      ✓ Pilgrim &amp; Visa Assistance
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 sm:p-8 space-y-4">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-navy-900 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-gold-600" />
+                  <span>Key Responsibilities &amp; Role</span>
+                </h4>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Facilitates holiday package coordination, itinerary dispatch, and dedicated client
+                  support throughout the visa application lifecycle, ensuring travellers receive prompt
+                  updates and hassle-free departures.
+                </p>
+
+                <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
+                  <div className="p-3 rounded-xl bg-ivory-50 border border-border-muted">
+                    <span className="font-bold text-navy-900 block">Support Desk</span>
+                    <span className="text-slate-600 text-[11px]">24/7 Client Helpline</span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-ivory-50 border border-border-muted">
+                    <span className="font-bold text-navy-900 block">Direct Inquiry</span>
+                    <a href="tel:+923144310865" className="text-gold-600 font-semibold text-[11px] hover:underline">
+                      0314 4310865
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="px-6 sm:px-8 py-3.5 bg-ivory-50 border-t border-border-muted flex items-center justify-between text-xs text-slate-500">
+              <span className="font-medium text-navy-900">Operations Desk</span>
+              <span className="text-gold-600 font-mono font-semibold">Client Relations</span>
+            </div>
+          </Card3D>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          4. OUR CORE VALUES (3D TILT CARDS)
       ========================================================================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-8 mb-20 sm:mb-28">
         <div className="text-center space-y-2 mb-12">
