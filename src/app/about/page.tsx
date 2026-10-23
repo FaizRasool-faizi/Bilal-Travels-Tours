@@ -310,13 +310,13 @@ export default function AboutPage() {
           >
             <div>
               <div className="relative bg-gradient-to-br from-navy-950 via-[#10243C] to-navy-900 p-6 sm:p-8 text-white flex flex-col sm:flex-row items-center sm:items-start gap-6 border-b border-gold-400/20">
-                <div className="relative w-36 h-48 sm:w-44 sm:h-56 rounded-2xl overflow-hidden border-2 border-gold-400/60 shadow-xl flex-shrink-0 bg-white group flex items-end justify-center">
+                <div className="relative w-36 h-48 sm:w-44 sm:h-56 rounded-2xl overflow-hidden border-2 border-gold-400/60 shadow-xl flex-shrink-0 bg-navy-900 group">
                   <img
-                    src="/images/coordinator-abbas-ahmad-saifi.png"
+                    src="/images/coordinator-abbas-ahmad-saifi.jpg"
                     alt="Abbas Ahmad Saifi - Office Coordinator"
-                    className="w-full h-full object-contain object-bottom group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950/20 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950/30 via-transparent to-transparent pointer-events-none" />
                 </div>
 
                 <div className="text-center sm:text-left space-y-2 flex-1">
@@ -385,13 +385,13 @@ export default function AboutPage() {
           >
             <div>
               <div className="relative bg-gradient-to-br from-navy-950 via-[#10243C] to-navy-900 p-6 sm:p-8 text-white flex flex-col sm:flex-row items-center sm:items-start gap-6 border-b border-gold-400/20">
-                <div className="relative w-36 h-48 sm:w-44 sm:h-56 rounded-2xl overflow-hidden border-2 border-gold-400/60 shadow-xl flex-shrink-0 bg-white group flex items-end justify-center">
+                <div className="relative w-36 h-48 sm:w-44 sm:h-56 rounded-2xl overflow-hidden border-2 border-gold-400/60 shadow-xl flex-shrink-0 bg-navy-900 group">
                   <img
-                    src="/images/operations-waqar-ahmad.png"
+                    src="/images/operations-waqar-ahmad.jpg"
                     alt="Waqar Ahmad - Operations & Customer Relations"
-                    className="w-full h-full object-contain object-bottom group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950/20 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950/30 via-transparent to-transparent pointer-events-none" />
                 </div>
 
                 <div className="text-center sm:text-left space-y-2 flex-1">
