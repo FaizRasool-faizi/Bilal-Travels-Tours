@@ -251,10 +251,11 @@ export default function VisaPage() {
 
                 <div className="bg-gradient-to-br from-navy-950 to-navy-900 text-white px-5 py-3 rounded-2xl border border-gold-400/40 text-right self-start sm:self-auto shadow-sm">
                   <span className="text-[10px] text-gold-400 uppercase tracking-widest font-mono block">
-                    Consultancy Tariff
+                    Embassy Verification
                   </span>
-                  <span className="font-serif text-lg font-bold text-white">
-                    {selectedVisa.pricePKR ? `PKR ${selectedVisa.pricePKR}` : "Quote On Request"}
+                  <span className="font-serif text-sm font-bold text-white flex items-center gap-1.5 justify-end">
+                    <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                    <span>Official Assessment</span>
                   </span>
                 </div>
               </div>
@@ -404,12 +405,13 @@ export default function VisaPage() {
                 </div>
               </div>
 
-              {/* Fee Notice */}
+              {/* Guidelines Notice */}
               <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-start gap-3 text-xs text-amber-950">
                 <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
                 <p className="leading-relaxed">
-                  <strong>Official Embassy Fee Notice:</strong> {selectedVisa.embassyFeeNote}. Exchange
-                  rates &amp; embassy revisions are calculated at the time of file submission.
+                  <strong>Consular Guidelines Notice:</strong> All visa documentation, file formatting,
+                  and biometric appointment scheduling are managed according to the latest official
+                  embassy standards. Contact our visa officers for personalized file pre-screening.
                 </p>
               </div>
             </Card3D>
