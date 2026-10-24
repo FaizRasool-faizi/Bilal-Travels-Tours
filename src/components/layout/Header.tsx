@@ -18,6 +18,7 @@ import {
   Clock,
   Heart,
   MessageCircle,
+  Lock,
 } from "lucide-react";
 import { DESTINATIONS, TOURS } from "@/lib/data";
 
@@ -95,6 +96,15 @@ export default function Header({ onOpenMobileNav }: HeaderProps) {
               <span className="bg-gold-500/20 text-gold-400 text-[10px] px-1.5 py-0.5 rounded font-mono font-bold">
                 LIVE
               </span>
+            </Link>
+            <span className="text-navy-700">|</span>
+            <Link
+              href="/admin"
+              className="hover:text-gold-300 text-gold-400 font-semibold flex items-center gap-1.5 transition-colors bg-navy-900/80 px-2.5 py-0.5 rounded-full border border-gold-500/30 text-[11px] shadow-xs"
+              title="Staff & Administrator Portal"
+            >
+              <Lock className="w-3 h-3 text-gold-400" />
+              <span>Admin Login</span>
             </Link>
           </div>
         </div>
@@ -508,7 +518,17 @@ export default function Header({ onOpenMobileNav }: HeaderProps) {
           </nav>
 
           {/* Right Action Button & Mobile Trigger */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            {/* Admin Login Button */}
+            <Link
+              href="/admin"
+              className="hidden md:inline-flex items-center gap-1.5 text-xs font-bold text-navy-950 hover:text-gold-600 px-3.5 py-2 rounded-full border border-gold-500/30 hover:border-gold-500 bg-ivory-50 hover:bg-gold-50/60 transition-all shadow-xs"
+              title="Staff & Administrator Portal"
+            >
+              <Lock className="w-3.5 h-3.5 text-gold-600" />
+              <span>Admin</span>
+            </Link>
+
             <Link
               href="/contact?intent=plan-trip"
               className="hidden md:inline-flex items-center gap-2.5 bg-navy-950 hover:bg-navy-900 text-white pl-2.5 pr-4 py-1.5 rounded-full border border-gold-400/40 shadow-[0_4px_20px_rgba(16,45,79,0.14)] hover:shadow-[0_8px_25px_rgba(181,139,69,0.28)] hover:border-gold-400 hover:-translate-y-0.5 transition-all duration-300 group"
@@ -683,6 +703,16 @@ export default function Header({ onOpenMobileNav }: HeaderProps) {
                 className="py-3 border-b border-ivory-200 hover:text-gold-600 block"
               >
                 Contact Us &amp; Head Office
+              </Link>
+
+              {/* Admin Login (Mobile) */}
+              <Link
+                href="/admin"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="py-3 border-b border-ivory-200 text-gold-700 font-bold flex items-center gap-2"
+              >
+                <Lock className="w-4 h-4 text-gold-600" />
+                <span>Admin &amp; Staff Login</span>
               </Link>
 
               {/* Track My Journey */}
