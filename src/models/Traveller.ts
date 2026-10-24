@@ -15,6 +15,10 @@ export interface ITraveller extends Document {
   tripCategory: string;
   status: "Completed" | "Traveling Now" | "Upcoming";
   notes?: string;
+  visaImage?: string;
+  visaType?: string;
+  visaNumber?: string;
+  visaExpiryDate?: string;
   createdAt: string;
 }
 
@@ -38,6 +42,10 @@ const TravellerSchema: Schema = new Schema(
       default: "Traveling Now",
     },
     notes: { type: String, default: "" },
+    visaImage: { type: String, default: "" },
+    visaType: { type: String, default: "Umrah Visa" },
+    visaNumber: { type: String, default: "" },
+    visaExpiryDate: { type: String, default: "" },
     createdAt: { type: String, default: () => new Date().toISOString() },
   },
   {

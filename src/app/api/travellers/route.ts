@@ -19,6 +19,10 @@ export interface TravellerRecord {
   tripCategory: string;
   status: "Completed" | "Traveling Now" | "Upcoming";
   notes?: string;
+  visaImage?: string;
+  visaType?: string;
+  visaNumber?: string;
+  visaExpiryDate?: string;
   createdAt: string;
 }
 
@@ -68,6 +72,10 @@ function formatDoc(doc: any): TravellerRecord {
     tripCategory: doc.tripCategory || "Umrah",
     status: doc.status || "Traveling Now",
     notes: doc.notes || "",
+    visaImage: doc.visaImage || "",
+    visaType: doc.visaType || "Umrah Visa",
+    visaNumber: doc.visaNumber || "",
+    visaExpiryDate: doc.visaExpiryDate || "",
     createdAt: doc.createdAt?.toString() || new Date().toISOString(),
   };
 }
@@ -149,6 +157,10 @@ export async function POST(req: NextRequest) {
       tripCategory: body.tripCategory || "Umrah",
       status: body.status || "Traveling Now",
       notes: body.notes || "",
+      visaImage: body.visaImage || "",
+      visaType: body.visaType || "Umrah Visa",
+      visaNumber: body.visaNumber || "",
+      visaExpiryDate: body.visaExpiryDate || "",
       createdAt: new Date().toISOString(),
     };
 

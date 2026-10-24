@@ -2,24 +2,23 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import {
-  Star,
-  ShieldCheck,
-  MapPin,
-  CheckCircle2,
-  Calendar,
-  Plane,
-  Clock,
-  Sparkles,
   Users,
   Search,
+  Plane,
+  Calendar,
+  MapPin,
+  FileText,
+  CheckCircle2,
   Filter,
-  Lock,
+  ShieldCheck,
+  Eye,
   ExternalLink,
   Phone,
   Building,
   ArrowRight,
+  X,
+  Sparkles,
 } from "lucide-react";
 import Card3D from "@/components/ui/Card3D";
 
@@ -38,6 +37,10 @@ export interface TravellerRecord {
   tripCategory: string;
   status: "Completed" | "Traveling Now" | "Upcoming";
   notes?: string;
+  visaImage?: string;
+  visaType?: string;
+  visaNumber?: string;
+  visaExpiryDate?: string;
   createdAt?: string;
 }
 
@@ -56,6 +59,9 @@ export default function TravellersPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedStatus, setSelectedStatus] = useState("All");
 
+  // Visa Lightbox Modal State
+  const [selectedVisaModal, setSelectedVisaModal] = useState<TravellerRecord | null>(null);
+
   useEffect(() => {
     async function loadTravellers() {
       try {
@@ -65,7 +71,7 @@ export default function TravellersPage() {
           setTravellers(json.data);
         }
       } catch (err) {
-        console.error("Error fetching travellers:", err);
+        console.error("Failed to load travellers:", err);
       } finally {
         setIsLoading(false);
       }
@@ -73,15 +79,23 @@ export default function TravellersPage() {
     loadTravellers();
   }, []);
 
-  const filtered = travellers.filter((t) => {
-    const matchesSearch =
-      t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      t.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      t.departureCity.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      t.flightDetails.toLowerCase().includes(searchTerm.toLowerCase());
+  const categories = ["All", "Umrah", "International Tour", "Family Holiday", "Work Visa & Employment"];
+  const statuses = ["All", "Traveling Now", "Upcoming", "Completed"];
 
-    const matchesCategory = selectedCategory === "All" || t.tripCategory === selectedCategory;
-    const matchesStatus = selectedStatus === "All" || t.status === selectedStatus;
+  // Filtered List
+  const filtered = travellers.filter((item) => {
+    const matchesSearch =
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.departureCity.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.flightDetails.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (item.visaType && item.visaType.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    const matchesCategory =
+      selectedCategory === "All" || item.tripCategory === selectedCategory;
+
+    const matchesStatus = selectedStatus === "All" || item.status === selectedStatus;
 
     return matchesSearch && matchesCategory && matchesStatus;
   });
@@ -117,8 +131,8 @@ export default function TravellersPage() {
 
               <p className="text-slate-300 text-sm sm:text-base leading-relaxed font-light">
                 Authentic records of families, honeymooners, and Umrah pilgrims across Pakistan
-                who traveled through Bilal Travels &amp; Tours with confirmed flights and verified
-                hotel stays.
+                who traveled through Bilal Travels &amp; Tours with confirmed flights, verified
+                hotel stays, and issued visas.
               </p>
             </div>
 
@@ -161,41 +175,41 @@ export default function TravellersPage() {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-3.5 py-2.5 rounded-xl border border-border-muted text-xs bg-ivory-50 text-navy-900 focus:outline-none focus:border-gold-500"
+              className="px-3.5 py-2.5 rounded-xl border border-border-muted text-xs bg-ivory-50 text-navy-950 focus:outline-none focus:border-gold-500 font-medium"
             >
-              <option value="All">All Categories</option>
-              <option value="Umrah">Umrah Pilgrimage</option>
-              <option value="International Tour">International Tour</option>
-              <option value="Family Holiday">Family Holiday</option>
+              {categories.map((c) => (
+                <option key={c} value={c}>
+                  {c === "All" ? "All Categories" : c}
+                </option>
+              ))}
             </select>
 
             {/* Status Filter */}
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="px-3.5 py-2.5 rounded-xl border border-border-muted text-xs bg-ivory-50 text-navy-900 focus:outline-none focus:border-gold-500"
+              className="px-3.5 py-2.5 rounded-xl border border-border-muted text-xs bg-ivory-50 text-navy-950 focus:outline-none focus:border-gold-500 font-medium"
             >
-              <option value="All">All Statuses</option>
-              <option value="Traveling Now">Traveling Now</option>
-              <option value="Completed">Completed Journeys</option>
-              <option value="Upcoming">Upcoming Departures</option>
+              {statuses.map((s) => (
+                <option key={s} value={s}>
+                  {s === "All" ? "All Statuses" : s}
+                </option>
+              ))}
             </select>
           </div>
 
-          <div className="text-xs text-slate-500 font-mono flex items-center gap-1.5 self-center">
-            <span>Showing</span>
-            <strong className="text-navy-950 font-bold">{filtered.length}</strong>
-            <span>Verified Travellers</span>
+          <div className="text-xs text-slate-500 font-mono text-right">
+            Showing <strong className="text-navy-950">{filtered.length}</strong> verified travellers
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          3. TRAVELLERS 3D CARDS GRID (WITH FEMALE MODEST PLACEHOLDER RULE)
+          3. TRAVELLERS SHOWCASE (3D TILT CARDS WITH GENDER MODESTY RULE)
       ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-8 mb-20">
+      <section className="max-w-7xl mx-auto px-4 sm:px-8 mb-16">
         {isLoading ? (
-          <div className="p-16 text-center space-y-3">
+          <div className="bg-white rounded-3xl p-16 text-center border border-border-muted shadow-card space-y-3">
             <div className="w-10 h-10 border-4 border-gold-400 border-t-transparent rounded-full animate-spin mx-auto" />
             <p className="text-xs text-slate-500">Loading verified traveller records...</p>
           </div>
@@ -278,24 +292,23 @@ export default function TravellersPage() {
 
                         <p className="text-xs text-gold-400 font-mono flex items-center gap-1">
                           <MapPin className="w-3 h-3 flex-shrink-0" />
-                          <span className="truncate">Travelled from {traveller.departureCity}</span>
+                          <span>Origin: {traveller.departureCity}</span>
                         </p>
 
-                        <div className="pt-1 flex items-center gap-1.5 text-[11px] text-slate-300 font-mono">
-                          <span className="text-slate-400">Passport:</span>
-                          <span className="font-bold text-white">
-                            {maskPassport(traveller.passportNumber)}
+                        <div className="pt-1">
+                          <span className="inline-block px-2.5 py-0.5 rounded-md bg-white/10 text-[10px] font-mono text-slate-200 border border-white/10">
+                            Passport: {maskPassport(traveller.passportNumber)}
                           </span>
                         </div>
                       </div>
                     </div>
 
-                    {/* Card Body Details */}
-                    <div className="p-6 space-y-4 text-xs">
-                      {/* Destination Highlight */}
-                      <div className="p-3.5 rounded-2xl bg-ivory-50 border border-border-muted space-y-1">
-                        <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block">
-                          Journey Destination
+                    {/* Card Body */}
+                    <div className="p-6 space-y-4">
+                      {/* Destination Header */}
+                      <div>
+                        <span className="text-[10px] uppercase font-mono tracking-wider text-slate-600 block">
+                          Travel Destination
                         </span>
                         <h4 className="font-serif font-bold text-navy-950 text-base">
                           {traveller.destination}
@@ -344,6 +357,24 @@ export default function TravellersPage() {
                           <span className="truncate">Home: {traveller.address}</span>
                         </div>
                       )}
+
+                      {/* Verified Visa Badge & View Action */}
+                      {traveller.visaImage && (
+                        <div className="flex items-center justify-between p-2.5 rounded-xl bg-emerald-50 border border-emerald-200/90 text-[11px]">
+                          <div className="flex items-center gap-1.5 text-emerald-900 font-semibold truncate">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                            <span className="truncate">{traveller.visaType || "Official Visa Copy"}</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedVisaModal(traveller)}
+                            className="px-2.5 py-1 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[10px] flex items-center gap-1 shadow-xs transition-colors flex-shrink-0 cursor-pointer"
+                          >
+                            <Eye className="w-3 h-3" />
+                            <span>View Visa</span>
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -365,7 +396,57 @@ export default function TravellersPage() {
       </section>
 
       {/* =========================================================================
-          4. ADMIN DISPATCH CTA STRIP
+          4. FRONTEND VISA DOCUMENT PREVIEW LIGHTBOX MODAL
+      ========================================================================= */}
+      {selectedVisaModal && (
+        <div className="fixed inset-0 z-50 bg-navy-950/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+          <div className="w-full max-w-2xl bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-emerald-400/40 space-y-4 relative">
+            <div className="flex items-center justify-between pb-3 border-b border-border-muted">
+              <div>
+                <span className="text-[10px] uppercase tracking-wider font-bold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full inline-block mb-1 border border-emerald-300">
+                  {selectedVisaModal.visaType || "Verified Travel Visa"}
+                </span>
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-navy-950">
+                  {selectedVisaModal.name}&apos;s Official Visa Copy
+                </h3>
+                <p className="text-xs font-mono text-slate-500">
+                  Verified by Bilal Travels &amp; Tours • {selectedVisaModal.destination}
+                </p>
+              </div>
+              <button
+                onClick={() => setSelectedVisaModal(null)}
+                className="p-2 rounded-full hover:bg-slate-100 text-slate-400 hover:text-navy-950 cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Visa Document Image Container */}
+            <div className="max-h-[65vh] overflow-auto rounded-2xl border border-border-muted bg-slate-900 flex items-center justify-center p-2 shadow-inner">
+              <img
+                src={selectedVisaModal.visaImage}
+                alt={`${selectedVisaModal.name} Visa`}
+                className="max-w-full max-h-[60vh] object-contain rounded-xl"
+              />
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+              <span className="text-xs text-slate-500">
+                Official document processed through Lahore Consulate / E-Visa Portal.
+              </span>
+              <button
+                onClick={() => setSelectedVisaModal(null)}
+                className="w-full sm:w-auto px-5 py-2 rounded-xl bg-navy-950 text-white hover:bg-gold-500 hover:text-navy-950 font-bold text-xs transition-colors cursor-pointer"
+              >
+                Close Document
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          5. ADMIN DISPATCH CTA STRIP
       ========================================================================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-8 mb-16">
         <div className="rounded-3xl bg-gradient-to-r from-navy-950 via-[#0F2036] to-navy-900 text-white p-8 sm:p-12 border border-gold-400/40 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">

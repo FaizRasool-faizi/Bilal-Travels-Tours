@@ -45,6 +45,10 @@ export interface TravellerRecord {
   tripCategory: string;
   status: "Completed" | "Traveling Now" | "Upcoming";
   notes?: string;
+  visaImage?: string;
+  visaType?: string;
+  visaNumber?: string;
+  visaExpiryDate?: string;
   createdAt?: string;
 }
 
@@ -71,6 +75,14 @@ export default function AdminPortalPage() {
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
 
+  // Visa Document Preview Lightbox State
+  const [selectedVisaPreview, setSelectedVisaPreview] = useState<{
+    name: string;
+    visaImage: string;
+    visaType?: string;
+    visaNumber?: string;
+  } | null>(null);
+
   const initialFormState: Omit<TravellerRecord, "id"> = {
     name: "",
     gender: "male",
@@ -85,6 +97,10 @@ export default function AdminPortalPage() {
     tripCategory: "Umrah",
     status: "Traveling Now",
     notes: "",
+    visaImage: "",
+    visaType: "Umrah Visa",
+    visaNumber: "",
+    visaExpiryDate: "",
   };
 
   const [formData, setFormData] = useState(initialFormState);
@@ -135,16 +151,33 @@ export default function AdminPortalPage() {
     }
   };
 
+  // Photo Upload Handler (Up to 3MB)
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        alert("Image size should be less than 2MB.");
+      if (file.size > 3 * 1024 * 1024) {
+        alert("Image size should be less than 3MB.");
         return;
       }
       const reader = new FileReader();
       reader.onloadend = () => {
         setFormData((prev) => ({ ...prev, image: reader.result as string }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Visa Document Upload Handler (Supports images & PDFs up to 5MB)
+  const handleVisaUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert("Visa document size should be less than 5MB.");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData((prev) => ({ ...prev, visaImage: reader.result as string }));
       };
       reader.readAsDataURL(file);
     }
@@ -173,6 +206,10 @@ export default function AdminPortalPage() {
       tripCategory: traveller.tripCategory,
       status: traveller.status,
       notes: traveller.notes || "",
+      visaImage: traveller.visaImage || "",
+      visaType: traveller.visaType || "Umrah Visa",
+      visaNumber: traveller.visaNumber || "",
+      visaExpiryDate: traveller.visaExpiryDate || "",
     });
     setFormError("");
     setIsModalOpen(true);
@@ -215,10 +252,10 @@ export default function AdminPortalPage() {
         setIsModalOpen(false);
         fetchTravellers();
       } else {
-        setFormError(json.error || "Failed to save record.");
+        setFormError(json.error || json.message || "Failed to save record.");
       }
     } catch (err) {
-      setFormError("Server error. Please try again.");
+      setFormError("Server error. Please ensure MongoDB is reachable.");
     } finally {
       setFormSubmitting(false);
     }
@@ -229,9 +266,10 @@ export default function AdminPortalPage() {
     const matchesSearch =
       t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       t.passportNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      t.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
       t.departureCity.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      t.flightDetails.toLowerCase().includes(searchTerm.toLowerCase());
+      t.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      t.flightDetails.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (t.visaNumber && t.visaNumber.toLowerCase().includes(searchTerm.toLowerCase()));
 
     const matchesCategory = filterCategory === "All" || t.tripCategory === filterCategory;
     const matchesStatus = filterStatus === "All" || t.status === filterStatus;
@@ -239,116 +277,125 @@ export default function AdminPortalPage() {
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
-  // =========================================================================
-  // VIEW A: LOGIN SCREEN
-  // =========================================================================
+  // Calculate stats
+  const totalCount = travellers.length;
+  const travelingNowCount = travellers.filter((t) => t.status === "Traveling Now").length;
+  const upcomingCount = travellers.filter((t) => t.status === "Upcoming").length;
+  const femaleCount = travellers.filter((t) => t.gender === "female").length;
+  const withVisaCount = travellers.filter((t) => t.visaImage).length;
+
+  /* =========================================================================
+     LOGIN SCREEN (GATE)
+  ========================================================================= */
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-navy-950 via-[#0A1A2E] to-navy-900 flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-gold-400/30 rounded-3xl p-8 sm:p-10 shadow-[0_25px_60px_rgba(0,0,0,0.5)] text-white space-y-7 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gold-400/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="min-h-screen bg-gradient-to-br from-[#091524] via-navy-950 to-[#0A1728] flex items-center justify-center p-4">
+        <div className="w-full max-w-md bg-navy-900/90 backdrop-blur-xl border border-gold-400/30 rounded-3xl p-8 sm:p-10 shadow-[0_25px_60px_rgba(0,0,0,0.5)] space-y-6 text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-48 h-48 bg-gold-400/10 rounded-full blur-2xl pointer-events-none" />
 
           <div className="text-center space-y-2 relative z-10">
-            <div className="w-16 h-16 rounded-2xl bg-white/10 p-2.5 border border-gold-400/40 flex items-center justify-center mx-auto shadow-md">
-              <ShieldCheck className="w-9 h-9 text-gold-400" />
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gold-400/20 border border-gold-400/40 text-gold-400 mb-2 shadow-inner">
+              <ShieldCheck className="w-8 h-8" />
             </div>
-            <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-white mt-3">
-              Bilal Travels Admin Portal
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-white">
+              Bilal Travels Portal
             </h1>
             <p className="text-xs text-slate-300">
-              Executive Traveller Management &amp; Flight Records
+              Staff &amp; Administrator Access Control System
             </p>
           </div>
 
           {loginError && (
-            <div className="p-3.5 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-center gap-2">
+            <div className="p-3.5 rounded-xl bg-red-500/20 border border-red-500/40 text-red-200 text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
               <span>{loginError}</span>
             </div>
           )}
 
-          <form onSubmit={handleLogin} className="space-y-4 text-xs">
+          <form onSubmit={handleLogin} className="space-y-4 relative z-10 text-xs">
             <div>
-              <label className="block text-slate-300 mb-1.5 font-medium">Administrator Username</label>
+              <label className="block text-slate-300 font-semibold mb-1">
+                Admin Username
+              </label>
               <div className="relative">
+                <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                 <input
                   type="text"
                   required
                   placeholder="admin"
                   value={loginUsername}
                   onChange={(e) => setLoginUsername(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-xl bg-navy-900/80 border border-gold-400/30 text-white placeholder-slate-500 focus:outline-none focus:border-gold-400 text-xs"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-navy-950/70 border border-gold-500/30 text-white placeholder-slate-500 focus:outline-none focus:border-gold-400 text-xs"
                 />
-                <User className="w-4 h-4 text-gold-400 absolute left-3.5 top-3.5" />
               </div>
             </div>
 
             <div>
-              <label className="block text-slate-300 mb-1.5 font-medium">Secret Password</label>
+              <label className="block text-slate-300 font-semibold mb-1">
+                Password
+              </label>
               <div className="relative">
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                 <input
                   type={showPassword ? "text" : "password"}
                   required
                   placeholder="••••••••••••"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full pl-10 pr-10 py-3 rounded-xl bg-navy-900/80 border border-gold-400/30 text-white placeholder-slate-500 focus:outline-none focus:border-gold-400 text-xs"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-navy-950/70 border border-gold-500/30 text-white placeholder-slate-500 focus:outline-none focus:border-gold-400 text-xs"
                 />
-                <Lock className="w-4 h-4 text-gold-400 absolute left-3.5 top-3.5" />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-slate-400 hover:text-white"
+                  className="absolute right-3.5 top-3 text-slate-400 hover:text-white cursor-pointer"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-gold-500 hover:bg-gold-400 text-navy-950 font-bold py-3.5 rounded-xl text-xs sm:text-sm shadow-card transition-all flex items-center justify-center gap-2 mt-4 cursor-pointer"
-            >
-              <span>Unlock Admin Dashboard</span>
-              <ShieldCheck className="w-4 h-4" />
-            </button>
+            <div className="pt-2">
+              <button
+                type="submit"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-gold-500 to-amber-400 hover:from-gold-400 hover:to-amber-300 text-navy-950 font-bold text-xs uppercase tracking-wider transition-all shadow-lg hover:shadow-gold-500/20 cursor-pointer"
+              >
+                Log In to Admin Portal
+              </button>
+            </div>
           </form>
 
-          {/* Credentials Helper Note */}
-          <div className="pt-2 text-center border-t border-white/10">
-            <p className="text-[11px] text-slate-400">
-              Default Credentials: <strong className="text-gold-300">admin</strong> /{" "}
-              <strong className="text-gold-300">bilal@travels2026</strong>
-            </p>
+          <div className="pt-2 text-center text-[11px] text-slate-400 border-t border-white/10">
+            <p>1 Minar wali Masjid, Kacha Jail road, Lahore</p>
+            <p className="text-gold-400 font-mono mt-0.5">Helplines: 0306 5602040 | 0314 4310865</p>
           </div>
         </div>
       </div>
     );
   }
 
-  // =========================================================================
-  // VIEW B: AUTHENTICATED ADMIN DASHBOARD
-  // =========================================================================
+  /* =========================================================================
+     ADMIN DASHBOARD
+  ========================================================================= */
   return (
-    <div className="bg-[#FAF8F3] min-h-screen pb-20">
-      {/* Top Admin Navigation Header */}
-      <header className="bg-navy-950 text-white border-b border-gold-400/30 sticky top-0 z-40 shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-4 flex items-center justify-between">
+    <div className="bg-[#FAF8F3] min-h-screen text-navy-950">
+      {/* Top Admin Header Bar */}
+      <header className="bg-navy-950 text-white border-b border-gold-500/30 sticky top-0 z-40 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gold-400/10 border border-gold-400/30 flex items-center justify-center text-gold-400">
-              <ShieldCheck className="w-6 h-6" />
+            <div className="w-9 h-9 rounded-xl bg-gold-400/20 border border-gold-400/40 flex items-center justify-center text-gold-400 font-bold">
+              BT
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-serif text-lg sm:text-xl font-bold tracking-tight text-white">
+                <span className="font-serif text-base sm:text-lg font-bold tracking-tight text-white">
                   Bilal Travels &amp; Tours
-                </h1>
-                <span className="px-2 py-0.5 rounded-full bg-gold-400/20 text-gold-300 font-mono text-[10px] font-bold uppercase border border-gold-400/40">
+                </span>
+                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-gold-400/20 text-gold-300 border border-gold-400/30 font-bold">
                   Admin Portal
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 hidden sm:block">
-                Registered Office: 1 Minar wali Masjid, Chungi Amar Sidhu Lahore
+              <p className="text-[11px] text-slate-400">
+                Logged in as <span className="text-gold-300 font-mono font-bold">Administrator</span>
               </p>
             </div>
           </div>
@@ -357,15 +404,15 @@ export default function AdminPortalPage() {
             <Link
               href="/travellers"
               target="_blank"
-              className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 border border-white/10 text-xs font-semibold flex items-center gap-1.5 transition-colors"
+              className="text-xs text-gold-300 hover:text-gold-200 flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gold-400/30 bg-navy-900/60 transition-colors"
             >
-              <span>View Frontend</span>
-              <ExternalLink className="w-3.5 h-3.5 text-gold-400" />
+              <span>View Public Frontend</span>
+              <ExternalLink className="w-3.5 h-3.5" />
             </Link>
 
             <button
               onClick={handleLogout}
-              className="px-3.5 py-1.5 rounded-xl bg-red-950/60 hover:bg-red-900 border border-red-500/30 text-red-300 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="text-xs text-rose-300 hover:text-rose-200 flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-500/30 bg-rose-950/40 hover:bg-rose-900/60 transition-colors cursor-pointer"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Logout</span>
@@ -374,53 +421,37 @@ export default function AdminPortalPage() {
         </div>
       </header>
 
-      {/* Main Admin Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-8 pt-8 space-y-8">
-        {/* Metric Badges */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white p-5 rounded-2xl border border-border-muted shadow-sm space-y-1">
-            <div className="flex items-center justify-between text-slate-500 text-xs">
-              <span>Total Travellers</span>
-              <Users className="w-4 h-4 text-gold-600" />
-            </div>
-            <span className="font-serif text-3xl font-bold text-navy-950 block">
-              {travellers.length}
-            </span>
-            <p className="text-[11px] text-slate-400">Recorded in Database</p>
+      <main className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-8">
+        {/* Metric Cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+          <div className="bg-white p-5 rounded-2xl border border-border-muted shadow-card">
+            <span className="text-[11px] uppercase font-mono text-slate-500 block">Total Travellers</span>
+            <span className="font-serif text-3xl font-bold text-navy-950 block mt-1">{totalCount}</span>
+            <span className="text-[10px] text-emerald-600 block mt-0.5">● Synced with Cloud DB</span>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-border-muted shadow-sm space-y-1">
-            <div className="flex items-center justify-between text-slate-500 text-xs">
-              <span>Traveling Now</span>
-              <Plane className="w-4 h-4 text-emerald-600" />
-            </div>
-            <span className="font-serif text-3xl font-bold text-emerald-600 block">
-              {travellers.filter((t) => t.status === "Traveling Now").length}
-            </span>
-            <p className="text-[11px] text-slate-400">Active Pilgrims &amp; Tourists</p>
+          <div className="bg-white p-5 rounded-2xl border border-border-muted shadow-card">
+            <span className="text-[11px] uppercase font-mono text-slate-500 block">Traveling Now</span>
+            <span className="font-serif text-3xl font-bold text-emerald-600 block mt-1">{travelingNowCount}</span>
+            <span className="text-[10px] text-slate-500 block mt-0.5">Active in Makkah / Foreign</span>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-border-muted shadow-sm space-y-1">
-            <div className="flex items-center justify-between text-slate-500 text-xs">
-              <span>Upcoming Departures</span>
-              <Clock className="w-4 h-4 text-blue-600" />
-            </div>
-            <span className="font-serif text-3xl font-bold text-blue-600 block">
-              {travellers.filter((t) => t.status === "Upcoming").length}
-            </span>
-            <p className="text-[11px] text-slate-400">Files Processed</p>
+          <div className="bg-white p-5 rounded-2xl border border-border-muted shadow-card">
+            <span className="text-[11px] uppercase font-mono text-slate-500 block">Upcoming Trips</span>
+            <span className="font-serif text-3xl font-bold text-blue-600 block mt-1">{upcomingCount}</span>
+            <span className="text-[10px] text-slate-500 block mt-0.5">Departures scheduled</span>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-border-muted shadow-sm space-y-1">
-            <div className="flex items-center justify-between text-slate-500 text-xs">
-              <span>Gender Split</span>
-              <Sparkles className="w-4 h-4 text-purple-600" />
-            </div>
-            <span className="font-serif text-2xl font-bold text-navy-950 block">
-              👨 {travellers.filter((t) => t.gender === "male").length} / 🧕{" "}
-              {travellers.filter((t) => t.gender === "female").length}
-            </span>
-            <p className="text-[11px] text-slate-400">Ladies identity protected on frontend</p>
+          <div className="bg-white p-5 rounded-2xl border border-border-muted shadow-card">
+            <span className="text-[11px] uppercase font-mono text-slate-500 block">Visas Attached</span>
+            <span className="font-serif text-3xl font-bold text-emerald-700 block mt-1">{withVisaCount}</span>
+            <span className="text-[10px] text-slate-500 block mt-0.5">Official Visas Verified</span>
+          </div>
+
+          <div className="bg-white p-5 rounded-2xl border border-border-muted shadow-card col-span-2 sm:col-span-1">
+            <span className="text-[11px] uppercase font-mono text-slate-500 block">Female Privacy</span>
+            <span className="font-serif text-3xl font-bold text-purple-700 block mt-1">{femaleCount}</span>
+            <span className="text-[10px] text-purple-600 font-medium block mt-0.5">🧕 Modesty Rule Protected</span>
           </div>
         </div>
 
@@ -429,13 +460,13 @@ export default function AdminPortalPage() {
           <div className="flex-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             {/* Search Input */}
             <div className="relative flex-1">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
               <input
                 type="text"
-                placeholder="Search traveller by name, passport, flight, or destination..."
+                placeholder="Search traveller, passport, visa number, city, or flight..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border-muted text-xs focus:outline-none focus:border-gold-500 bg-ivory-50"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border-muted text-xs focus:outline-none focus:border-gold-500 bg-ivory-50 text-navy-950"
               />
             </div>
 
@@ -443,19 +474,20 @@ export default function AdminPortalPage() {
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="px-3.5 py-2.5 rounded-xl border border-border-muted text-xs bg-ivory-50 text-navy-900 focus:outline-none focus:border-gold-500"
+              className="px-3.5 py-2.5 rounded-xl border border-border-muted text-xs bg-ivory-50 text-navy-950 focus:outline-none focus:border-gold-500"
             >
               <option value="All">All Categories</option>
               <option value="Umrah">Umrah Pilgrimage</option>
               <option value="International Tour">International Tour</option>
               <option value="Family Holiday">Family Holiday</option>
+              <option value="Work Visa & Employment">Work Visa &amp; Employment</option>
             </select>
 
             {/* Status Filter */}
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-3.5 py-2.5 rounded-xl border border-border-muted text-xs bg-ivory-50 text-navy-900 focus:outline-none focus:border-gold-500"
+              className="px-3.5 py-2.5 rounded-xl border border-border-muted text-xs bg-ivory-50 text-navy-950 focus:outline-none focus:border-gold-500"
             >
               <option value="All">All Statuses</option>
               <option value="Traveling Now">Traveling Now</option>
@@ -464,18 +496,18 @@ export default function AdminPortalPage() {
             </select>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <button
               onClick={fetchTravellers}
-              title="Refresh"
-              className="p-2.5 rounded-xl border border-border-muted hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
+              title="Refresh Data"
+              className="p-2.5 rounded-xl border border-border-muted hover:bg-ivory-50 text-slate-600 transition-colors cursor-pointer"
             >
               <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
             </button>
 
             <button
               onClick={handleOpenAdd}
-              className="bg-navy-950 hover:bg-gold-500 hover:text-navy-950 text-white font-bold px-5 py-2.5 rounded-xl text-xs flex items-center gap-2 shadow-card transition-all cursor-pointer whitespace-nowrap"
+              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-gold-500 to-amber-400 hover:from-gold-400 hover:to-amber-300 text-navy-950 font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-md hover:shadow-gold-500/20 transition-all cursor-pointer whitespace-nowrap"
             >
               <Plus className="w-4 h-4" />
               <span>Add New Traveller</span>
@@ -483,20 +515,29 @@ export default function AdminPortalPage() {
           </div>
         </div>
 
-        {/* Travellers Table */}
+        {/* Data Table */}
         <div className="bg-white rounded-3xl border border-border-muted shadow-card overflow-hidden">
           <div className="p-5 border-b border-border-muted flex items-center justify-between">
-            <h2 className="font-serif text-lg font-bold text-navy-950">
-              Registered Travellers &amp; Flights ({filteredTravellers.length})
-            </h2>
-            <div className="text-[11px] text-slate-500 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span>Public rules active: Ladies photos are automatically masked on frontend</span>
+            <div>
+              <h2 className="font-serif text-xl font-bold text-navy-950">
+                Registered Travellers &amp; Pilgrims
+              </h2>
+              <p className="text-xs text-slate-500">
+                Showing {filteredTravellers.length} of {travellers.length} client files
+              </p>
             </div>
+            <span className="text-[11px] text-slate-500 font-mono">
+              Database: MongoDB Cloud (M0)
+            </span>
           </div>
 
-          {filteredTravellers.length === 0 ? (
-            <div className="p-12 text-center space-y-3">
+          {isLoading ? (
+            <div className="p-16 text-center space-y-3">
+              <RefreshCw className="w-8 h-8 animate-spin text-gold-500 mx-auto" />
+              <p className="text-xs text-slate-500">Loading travellers records from database...</p>
+            </div>
+          ) : filteredTravellers.length === 0 ? (
+            <div className="p-16 text-center space-y-3">
               <Users className="w-12 h-12 text-slate-300 mx-auto" />
               <h3 className="font-serif text-lg text-slate-600">No travellers found</h3>
               <p className="text-xs text-slate-400">
@@ -512,6 +553,7 @@ export default function AdminPortalPage() {
                   <tr>
                     <th className="py-3 px-4">Traveller / Photo</th>
                     <th className="py-3 px-4">Passport</th>
+                    <th className="py-3 px-4">Visa Document</th>
                     <th className="py-3 px-4">Origin &amp; Dates</th>
                     <th className="py-3 px-4">Destination &amp; Flight</th>
                     <th className="py-3 px-4">Address</th>
@@ -560,6 +602,34 @@ export default function AdminPortalPage() {
                       {/* Passport */}
                       <td className="py-3.5 px-4 font-mono font-bold text-navy-900">
                         {traveller.passportNumber}
+                      </td>
+
+                      {/* Visa Copy */}
+                      <td className="py-3.5 px-4 whitespace-nowrap">
+                        {traveller.visaImage ? (
+                          <div className="space-y-1">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setSelectedVisaPreview({
+                                  name: traveller.name,
+                                  visaImage: traveller.visaImage!,
+                                  visaType: traveller.visaType,
+                                  visaNumber: traveller.visaNumber,
+                                })
+                              }
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-semibold transition-colors cursor-pointer shadow-xs"
+                            >
+                              <FileText className="w-3.5 h-3.5 text-emerald-600" />
+                              <span>View Visa</span>
+                            </button>
+                            <span className="block text-[10px] text-slate-500 font-mono">
+                              {traveller.visaType || "Visa Document"}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="text-[11px] text-slate-400 italic">No Visa Uploaded</span>
+                        )}
                       </td>
 
                       {/* Origin & Dates */}
@@ -635,7 +705,7 @@ export default function AdminPortalPage() {
       </main>
 
       {/* =========================================================================
-          ADD / EDIT TRAVELLER MODAL
+          ADD / EDIT TRAVELLER MODAL (WITH VISA DOCUMENT UPLOAD)
       ========================================================================= */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-navy-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
@@ -646,7 +716,7 @@ export default function AdminPortalPage() {
                   {editingId ? "Edit Traveller Record" : "Add New Traveller"}
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Fill in passport, journey, and flight details. Records appear on frontend instantly.
+                  Fill in passport, visa copy, journey, and flight details. Records appear on frontend instantly.
                 </p>
               </div>
               <button
@@ -739,6 +809,90 @@ export default function AdminPortalPage() {
                 </div>
               </div>
 
+              {/* =========================================================================
+                  NEW: VISA DOCUMENT UPLOAD & DETAILS
+              ========================================================================= */}
+              <div className="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-300/80 space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="block text-emerald-950 font-bold flex items-center gap-1.5 text-xs">
+                    <FileText className="w-4 h-4 text-emerald-600" />
+                    <span>Visa Document / E-Visa Copy (File Upload or URL)</span>
+                  </label>
+                  {formData.visaImage && (
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-300">
+                      ✓ Document Attached
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-center gap-4">
+                  {/* Visa Preview Thumbnail */}
+                  <div className="w-20 h-20 rounded-2xl overflow-hidden bg-navy-900 border-2 border-emerald-400/60 flex-shrink-0 flex items-center justify-center relative group shadow-sm">
+                    {formData.visaImage ? (
+                      <img
+                        src={formData.visaImage}
+                        alt="Visa Document Preview"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="text-center p-1">
+                        <FileText className="w-6 h-6 text-emerald-400 mx-auto" />
+                        <span className="text-[8px] text-slate-300 block mt-0.5">No Visa</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex-1 w-full space-y-2">
+                    <input
+                      type="file"
+                      accept="image/*,application/pdf"
+                      onChange={handleVisaUpload}
+                      className="text-xs file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:bg-emerald-900 file:text-white file:text-xs file:cursor-pointer hover:file:bg-emerald-700"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Or paste direct Visa Image / Document URL (https://...)"
+                      value={formData.visaImage}
+                      onChange={(e) => setFormData({ ...formData, visaImage: e.target.value })}
+                      className="w-full px-3 py-2 rounded-xl border border-border-muted text-xs bg-white text-navy-950 focus:outline-none focus:border-emerald-500"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <div>
+                    <label className="block text-navy-900 font-bold mb-1 text-[11px]">
+                      Visa Type / Category
+                    </label>
+                    <select
+                      value={formData.visaType}
+                      onChange={(e) => setFormData({ ...formData, visaType: e.target.value })}
+                      className="w-full px-3 py-2 rounded-xl border border-border-muted bg-white text-navy-950 focus:outline-none focus:border-emerald-500 text-xs"
+                    >
+                      <option value="Umrah Visa">Umrah Visa (Saudi Arabia)</option>
+                      <option value="Work Visa (Çalışma İzni)">Work Visa / Employment Permit</option>
+                      <option value="Tourist e-Visa">Tourist e-Visa</option>
+                      <option value="Visit Visa">Family / Visit Visa</option>
+                      <option value="Business Visa">Business Commercial Visa</option>
+                      <option value="Transit Visa">Transit Visa</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-navy-900 font-bold mb-1 text-[11px]">
+                      Visa Number (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 62 090582 or eVisa Ref"
+                      value={formData.visaNumber}
+                      onChange={(e) => setFormData({ ...formData, visaNumber: e.target.value })}
+                      className="w-full px-3 py-2 rounded-xl border border-border-muted bg-white text-navy-950 focus:outline-none focus:border-emerald-500 font-mono text-xs"
+                    />
+                  </div>
+                </div>
+              </div>
+
               {/* Passport & Departure City */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -761,7 +915,7 @@ export default function AdminPortalPage() {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Lahore, Islamabad, Karachi"
+                    placeholder="e.g. Lahore, Karachi, Islamabad"
                     value={formData.departureCity}
                     onChange={(e) => setFormData({ ...formData, departureCity: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-border-muted bg-ivory-50 text-navy-950 focus:outline-none focus:border-gold-500"
@@ -769,14 +923,14 @@ export default function AdminPortalPage() {
                 </div>
               </div>
 
-              {/* Destination & Flight Details */}
+              {/* Destination & Flight */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-navy-900 font-bold mb-1">Destination *</label>
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Makkah & Madinah (Umrah), Istanbul, Dubai"
+                    placeholder="e.g. Makkah & Madinah (Umrah)"
                     value={formData.destination}
                     onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-border-muted bg-ivory-50 text-navy-950 focus:outline-none focus:border-gold-500"
@@ -796,7 +950,7 @@ export default function AdminPortalPage() {
                 </div>
               </div>
 
-              {/* Dates */}
+              {/* Departure Date & Return Date */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-navy-900 font-bold mb-1">Departure Date *</label>
@@ -805,7 +959,7 @@ export default function AdminPortalPage() {
                     required
                     value={formData.departureDate}
                     onChange={(e) => setFormData({ ...formData, departureDate: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-border-muted bg-ivory-50 text-navy-950 focus:outline-none focus:border-gold-500 font-mono"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-border-muted bg-ivory-50 text-navy-950 focus:outline-none focus:border-gold-500"
                   />
                 </div>
 
@@ -815,18 +969,18 @@ export default function AdminPortalPage() {
                     type="date"
                     value={formData.returnDate}
                     onChange={(e) => setFormData({ ...formData, returnDate: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-border-muted bg-ivory-50 text-navy-950 focus:outline-none focus:border-gold-500 font-mono"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-border-muted bg-ivory-50 text-navy-950 focus:outline-none focus:border-gold-500"
                   />
                 </div>
               </div>
 
-              {/* Address in Pakistan */}
+              {/* Residential Address */}
               <div>
                 <label className="block text-navy-900 font-bold mb-1">Residential Address *</label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Model Town, Lahore, Punjab"
+                  placeholder="e.g. Gulberg III, Lahore, Punjab, Pakistan"
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-border-muted bg-ivory-50 text-navy-950 focus:outline-none focus:border-gold-500"
@@ -845,7 +999,8 @@ export default function AdminPortalPage() {
                     <option value="Umrah">Umrah Pilgrimage</option>
                     <option value="International Tour">International Tour</option>
                     <option value="Family Holiday">Family Holiday</option>
-                    <option value="Visit Visa">Visit Visa</option>
+                    <option value="Work Visa & Employment">Work Visa &amp; Employment</option>
+                    <option value="Business Travel">Business Travel</option>
                   </select>
                 </div>
 
@@ -903,6 +1058,64 @@ export default function AdminPortalPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          VISA PREVIEW LIGHTBOX MODAL
+      ========================================================================= */}
+      {selectedVisaPreview && (
+        <div className="fixed inset-0 z-50 bg-navy-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+          <div className="w-full max-w-2xl bg-white rounded-3xl p-6 shadow-2xl border border-emerald-400/40 space-y-4 relative">
+            <div className="flex items-center justify-between pb-3 border-b border-border-muted">
+              <div>
+                <span className="text-[10px] uppercase tracking-wider font-bold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full inline-block mb-1 border border-emerald-300">
+                  {selectedVisaPreview.visaType || "Official Visa Copy"}
+                </span>
+                <h3 className="font-serif text-xl font-bold text-navy-950">
+                  {selectedVisaPreview.name}&apos;s Visa Document
+                </h3>
+                {selectedVisaPreview.visaNumber && (
+                  <p className="text-xs font-mono text-slate-500">
+                    Visa Ref: {selectedVisaPreview.visaNumber}
+                  </p>
+                )}
+              </div>
+              <button
+                onClick={() => setSelectedVisaPreview(null)}
+                className="p-2 rounded-full hover:bg-slate-100 text-slate-400 hover:text-navy-950 cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="max-h-[70vh] overflow-auto rounded-2xl border border-border-muted bg-slate-900 flex items-center justify-center p-2">
+              <img
+                src={selectedVisaPreview.visaImage}
+                alt="Visa Document"
+                className="max-w-full max-h-[65vh] object-contain rounded-xl"
+              />
+            </div>
+
+            <div className="flex items-center justify-between pt-2">
+              <a
+                href={selectedVisaPreview.visaImage}
+                download={`${selectedVisaPreview.name}-Visa.jpg`}
+                target="_blank"
+                rel="noreferrer"
+                className="px-4 py-2 rounded-xl bg-navy-950 text-white hover:bg-gold-500 hover:text-navy-950 transition-colors text-xs font-bold inline-flex items-center gap-1.5"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>Open Full Resolution / Download</span>
+              </a>
+              <button
+                onClick={() => setSelectedVisaPreview(null)}
+                className="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors text-xs font-semibold cursor-pointer"
+              >
+                Close Preview
+              </button>
+            </div>
           </div>
         </div>
       )}
