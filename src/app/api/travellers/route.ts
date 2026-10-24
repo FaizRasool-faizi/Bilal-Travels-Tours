@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import connectToDatabase from "@/lib/mongodb";
+import Traveller, { ITraveller } from "@/models/Traveller";
 
 export interface TravellerRecord {
   id: string;
@@ -22,7 +24,7 @@ export interface TravellerRecord {
 
 const dataFilePath = path.join(process.cwd(), "src", "data", "travellers.json");
 
-function readTravellers(): TravellerRecord[] {
+function readLocalTravellers(): TravellerRecord[] {
   try {
     if (!fs.existsSync(dataFilePath)) {
       return [];
@@ -30,12 +32,12 @@ function readTravellers(): TravellerRecord[] {
     const raw = fs.readFileSync(dataFilePath, "utf8");
     return JSON.parse(raw);
   } catch (error) {
-    console.error("Error reading travellers.json:", error);
+    console.error("Error reading local travellers.json:", error);
     return [];
   }
 }
 
-function writeTravellers(travellers: TravellerRecord[]): boolean {
+function writeLocalTravellers(travellers: TravellerRecord[]): boolean {
   try {
     const dir = path.dirname(dataFilePath);
     if (!fs.existsSync(dir)) {
@@ -44,70 +46,143 @@ function writeTravellers(travellers: TravellerRecord[]): boolean {
     fs.writeFileSync(dataFilePath, JSON.stringify(travellers, null, 2), "utf8");
     return true;
   } catch (error) {
-    console.error("Error writing travellers.json:", error);
+    console.error("Error writing local travellers.json (ephemeral on Vercel):", error);
     return false;
   }
 }
 
+// Convert Mongoose doc to plain clean object
+function formatDoc(doc: any): TravellerRecord {
+  return {
+    id: doc.id || doc._id?.toString(),
+    name: doc.name,
+    gender: doc.gender || "male",
+    image: doc.image || "",
+    passportNumber: doc.passportNumber || "",
+    departureCity: doc.departureCity || "Lahore",
+    destination: doc.destination || "Makkah & Madinah (Umrah)",
+    departureDate: doc.departureDate || "",
+    returnDate: doc.returnDate || "",
+    flightDetails: doc.flightDetails || "",
+    address: doc.address || "",
+    tripCategory: doc.tripCategory || "Umrah",
+    status: doc.status || "Traveling Now",
+    notes: doc.notes || "",
+    createdAt: doc.createdAt?.toString() || new Date().toISOString(),
+  };
+}
+
 // GET all travellers
 export async function GET() {
-  const travellers = readTravellers();
-  return NextResponse.json({ success: true, data: travellers });
+  try {
+    const mongooseConn = await connectToDatabase();
+
+    if (mongooseConn) {
+      // 1. Fetch from MongoDB
+      const count = await Traveller.countDocuments();
+
+      // Auto-seed if MongoDB is fresh/empty
+      if (count === 0) {
+        const localData = readLocalTravellers();
+        if (localData.length > 0) {
+          console.log(`🌱 Seeding MongoDB with ${localData.length} records from travellers.json...`);
+          await Traveller.insertMany(localData);
+        }
+      }
+
+      const docs = await Traveller.find({}).sort({ createdAt: -1 }).lean();
+      const travellers = docs.map(formatDoc);
+
+      return NextResponse.json({
+        success: true,
+        source: "mongodb_cloud",
+        count: travellers.length,
+        data: travellers,
+      });
+    }
+
+    // Fallback: Local JSON
+    const travellers = readLocalTravellers();
+    return NextResponse.json({
+      success: true,
+      source: "local_fallback",
+      count: travellers.length,
+      data: travellers,
+    });
+  } catch (error: any) {
+    console.error("GET /api/travellers error:", error);
+    // Graceful fallback
+    const travellers = readLocalTravellers();
+    return NextResponse.json({
+      success: true,
+      source: "local_fallback_error",
+      count: travellers.length,
+      data: travellers,
+    });
+  }
 }
 
 // POST: Add new traveller
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const {
-      name,
-      gender,
-      image,
-      passportNumber,
-      departureCity,
-      destination,
-      departureDate,
-      returnDate,
-      flightDetails,
-      address,
-      tripCategory,
-      status,
-      notes,
-    } = body;
 
-    if (!name || !passportNumber || !destination) {
+    if (!body.name || !body.passportNumber) {
       return NextResponse.json(
-        { success: false, error: "Name, Passport Number, and Destination are required." },
+        { success: false, message: "Name and Passport Number are required" },
         { status: 400 }
       );
     }
 
-    const currentTravellers = readTravellers();
-    const newTraveller: TravellerRecord = {
-      id: `trv-${Date.now()}`,
-      name: name.trim(),
-      gender: gender === "female" ? "female" : "male",
-      image: image || "",
-      passportNumber: passportNumber.trim(),
-      departureCity: departureCity || "Lahore",
-      destination: destination.trim(),
-      departureDate: departureDate || new Date().toISOString().split("T")[0],
-      returnDate: returnDate || "",
-      flightDetails: flightDetails || "Direct Flight",
-      address: address || "",
-      tripCategory: tripCategory || "Umrah",
-      status: status || "Upcoming",
-      notes: notes || "",
+    const newRecord: TravellerRecord = {
+      id: body.id || `trv-${Date.now()}`,
+      name: body.name.trim(),
+      gender: body.gender === "female" ? "female" : "male",
+      image: body.image || "",
+      passportNumber: body.passportNumber.trim(),
+      departureCity: body.departureCity || "Lahore",
+      destination: body.destination || "Makkah & Madinah (Umrah)",
+      departureDate: body.departureDate || new Date().toISOString().split("T")[0],
+      returnDate: body.returnDate || "",
+      flightDetails: body.flightDetails || "",
+      address: body.address || "",
+      tripCategory: body.tripCategory || "Umrah",
+      status: body.status || "Traveling Now",
+      notes: body.notes || "",
       createdAt: new Date().toISOString(),
     };
 
-    currentTravellers.unshift(newTraveller);
-    writeTravellers(currentTravellers);
+    const mongooseConn = await connectToDatabase();
 
-    return NextResponse.json({ success: true, data: newTraveller }, { status: 201 });
-  } catch (error) {
+    if (mongooseConn) {
+      const created = await Traveller.create(newRecord);
+      // Also update local file if running locally
+      const local = readLocalTravellers();
+      writeLocalTravellers([newRecord, ...local]);
+
+      return NextResponse.json({
+        success: true,
+        source: "mongodb_cloud",
+        message: "Traveller added successfully to MongoDB Cloud",
+        data: formatDoc(created),
+      });
+    }
+
+    // Fallback: Local File
+    const travellers = readLocalTravellers();
+    travellers.unshift(newRecord);
+    writeLocalTravellers(travellers);
+
+    return NextResponse.json({
+      success: true,
+      source: "local_file",
+      message: "Traveller added successfully (Local Storage)",
+      data: newRecord,
+    });
+  } catch (error: any) {
+    console.error("POST /api/travellers error:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to create traveller record" },
+      { success: false, message: error.message || "Failed to create traveller" },
       { status: 500 }
     );
   }
@@ -117,31 +192,59 @@ export async function POST(req: NextRequest) {
 export async function PUT(req: NextRequest) {
   try {
     const body = await req.json();
-    const { id, ...updates } = body;
 
-    if (!id) {
-      return NextResponse.json({ success: false, error: "Traveller ID is required" }, { status: 400 });
+    if (!body.id) {
+      return NextResponse.json(
+        { success: false, message: "Traveller ID is required" },
+        { status: 400 }
+      );
     }
 
-    const currentTravellers = readTravellers();
-    const index = currentTravellers.findIndex((t) => t.id === id);
+    const mongooseConn = await connectToDatabase();
 
+    if (mongooseConn) {
+      const updated = await Traveller.findOneAndUpdate(
+        { id: body.id },
+        { $set: body },
+        { new: true }
+      );
+
+      // Also update local file
+      const local = readLocalTravellers();
+      const updatedLocal = local.map((t) => (t.id === body.id ? { ...t, ...body } : t));
+      writeLocalTravellers(updatedLocal);
+
+      return NextResponse.json({
+        success: true,
+        source: "mongodb_cloud",
+        message: "Traveller updated successfully in MongoDB Cloud",
+        data: updated ? formatDoc(updated) : body,
+      });
+    }
+
+    // Fallback
+    const travellers = readLocalTravellers();
+    const index = travellers.findIndex((t) => t.id === body.id);
     if (index === -1) {
-      return NextResponse.json({ success: false, error: "Traveller not found" }, { status: 404 });
+      return NextResponse.json(
+        { success: false, message: "Traveller not found" },
+        { status: 404 }
+      );
     }
 
-    currentTravellers[index] = {
-      ...currentTravellers[index],
-      ...updates,
-      gender: updates.gender === "female" ? "female" : "male",
-    };
+    travellers[index] = { ...travellers[index], ...body };
+    writeLocalTravellers(travellers);
 
-    writeTravellers(currentTravellers);
-
-    return NextResponse.json({ success: true, data: currentTravellers[index] });
-  } catch (error) {
+    return NextResponse.json({
+      success: true,
+      source: "local_file",
+      message: "Traveller updated successfully",
+      data: travellers[index],
+    });
+  } catch (error: any) {
+    console.error("PUT /api/travellers error:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to update traveller record" },
+      { success: false, message: error.message || "Failed to update traveller" },
       { status: 500 }
     );
   }
@@ -154,22 +257,43 @@ export async function DELETE(req: NextRequest) {
     const id = searchParams.get("id");
 
     if (!id) {
-      return NextResponse.json({ success: false, error: "Traveller ID is required" }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: "Traveller ID is required" },
+        { status: 400 }
+      );
     }
 
-    const currentTravellers = readTravellers();
-    const filtered = currentTravellers.filter((t) => t.id !== id);
+    const mongooseConn = await connectToDatabase();
 
-    if (filtered.length === currentTravellers.length) {
-      return NextResponse.json({ success: false, error: "Traveller not found" }, { status: 404 });
+    if (mongooseConn) {
+      await Traveller.deleteOne({ id });
+
+      // Also remove from local
+      const local = readLocalTravellers();
+      const filtered = local.filter((t) => t.id !== id);
+      writeLocalTravellers(filtered);
+
+      return NextResponse.json({
+        success: true,
+        source: "mongodb_cloud",
+        message: "Traveller deleted successfully from MongoDB Cloud",
+      });
     }
 
-    writeTravellers(filtered);
+    // Fallback
+    const travellers = readLocalTravellers();
+    const filtered = travellers.filter((t) => t.id !== id);
+    writeLocalTravellers(filtered);
 
-    return NextResponse.json({ success: true, message: "Traveller removed successfully" });
-  } catch (error) {
+    return NextResponse.json({
+      success: true,
+      source: "local_file",
+      message: "Traveller deleted successfully",
+    });
+  } catch (error: any) {
+    console.error("DELETE /api/travellers error:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to delete traveller record" },
+      { success: false, message: error.message || "Failed to delete traveller" },
       { status: 500 }
     );
   }
