@@ -497,6 +497,14 @@ export default function Header({ onOpenMobileNav }: HeaderProps) {
             >
               About
             </Link>
+
+            {/* 7. Contact Us */}
+            <Link
+              href="/contact"
+              className="text-charcoal-900 font-medium text-sm hover:text-gold-600 transition-colors py-1"
+            >
+              Contact Us
+            </Link>
           </nav>
 
           {/* Right Action Button & Mobile Trigger */}
@@ -666,6 +674,15 @@ export default function Header({ onOpenMobileNav }: HeaderProps) {
                 className="py-3 border-b border-ivory-200 hover:text-gold-600 block"
               >
                 About Bilal Travels &amp; Tours
+              </Link>
+
+              {/* Contact Us */}
+              <Link
+                href="/contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="py-3 border-b border-ivory-200 hover:text-gold-600 block"
+              >
+                Contact Us &amp; Head Office
               </Link>
 
               {/* Track My Journey */}
