@@ -1,6 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import { Phone, Mail, MapPin, Globe, Shield, Clock } from "lucide-react";
+import SocialLinks from "@/components/common/SocialIcons";
+import { COMPANY_CONTACT } from "@/lib/socials";
 
 export default function Footer() {
   return (
@@ -65,6 +67,14 @@ export default function Footer() {
           <div className="pt-2 text-xs text-gold-400/90 font-medium flex items-center gap-2">
             <Globe className="w-4 h-4 text-gold-400" />
             <span>Serving travellers nationwide across Pakistan</span>
+          </div>
+
+          {/* Official Social Media Channels */}
+          <div className="pt-3 space-y-2">
+            <span className="text-[11px] uppercase tracking-wider font-bold text-slate-400 block font-mono">
+              Follow Our Official Channels
+            </span>
+            <SocialLinks variant="icons" />
           </div>
         </div>
 
@@ -160,8 +170,11 @@ export default function Footer() {
               <Mail className="w-4 h-4 text-gold-400 mt-1 flex-shrink-0" />
               <div>
                 <p className="text-xs text-slate-400">Official Correspondence</p>
-                <a href="mailto:info@bilaltravels.pk" className="hover:text-gold-400 font-medium">
-                  info@bilaltravels.pk
+                <a
+                  href={`mailto:${COMPANY_CONTACT.email}`}
+                  className="hover:text-gold-400 font-medium text-white transition-colors"
+                >
+                  {COMPANY_CONTACT.email}
                 </a>
               </div>
             </div>

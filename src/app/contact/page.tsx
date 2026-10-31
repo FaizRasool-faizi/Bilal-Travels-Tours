@@ -23,6 +23,8 @@ import {
   Globe2,
 } from "lucide-react";
 import Card3D from "@/components/ui/Card3D";
+import SocialLinks from "@/components/common/SocialIcons";
+import { COMPANY_CONTACT } from "@/lib/socials";
 
 export default function ContactUsPage() {
   const [inquiryType, setInquiryType] = useState<"umrah" | "visa" | "tour" | "flight">("umrah");
@@ -534,6 +536,19 @@ export default function ContactUsPage() {
                 </div>
 
                 <div className="flex items-start gap-3">
+                  <Mail className="w-4 h-4 text-gold-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="block text-white">Official Email Address:</strong>
+                    <a
+                      href={`mailto:${COMPANY_CONTACT.email}`}
+                      className="text-gold-300 hover:text-gold-400 font-mono transition-colors block"
+                    >
+                      {COMPANY_CONTACT.email}
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
                   <Clock className="w-4 h-4 text-gold-400 flex-shrink-0 mt-0.5" />
                   <div>
                     <strong className="block text-white">In-Person Consultation:</strong>
@@ -545,6 +560,14 @@ export default function ContactUsPage() {
                     </span>
                   </div>
                 </div>
+              </div>
+
+              {/* Official Social Media Channels */}
+              <div className="pt-3 border-t border-white/10 space-y-2">
+                <span className="text-[10px] font-mono text-gold-400 uppercase tracking-widest block font-bold">
+                  Connect on Social Media
+                </span>
+                <SocialLinks variant="pills" />
               </div>
 
               <div className="pt-2">

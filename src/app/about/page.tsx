@@ -26,6 +26,8 @@ import {
   Navigation,
 } from "lucide-react";
 import Card3D from "@/components/ui/Card3D";
+import SocialLinks from "@/components/common/SocialIcons";
+import { COMPANY_CONTACT } from "@/lib/socials";
 
 export default function AboutPage() {
   return (
@@ -734,10 +736,16 @@ export default function AboutPage() {
                     </p>
                     <p className="text-slate-500 text-xs">
                       Official Email:{" "}
-                      <a href="mailto:info@bilaltravels.pk" className="hover:text-gold-600">
-                        info@bilaltravels.pk
+                      <a href={`mailto:${COMPANY_CONTACT.email}`} className="hover:text-gold-600 font-medium text-navy-900">
+                        {COMPANY_CONTACT.email}
                       </a>
                     </p>
+                    <div className="pt-2">
+                      <span className="text-[11px] font-semibold text-slate-500 block mb-1.5 uppercase tracking-wide">
+                        Official Social Media:
+                      </span>
+                      <SocialLinks variant="pills" />
+                    </div>
                   </div>
                 </div>
               </div>

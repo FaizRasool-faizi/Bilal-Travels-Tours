@@ -19,8 +19,11 @@ import {
   Heart,
   MessageCircle,
   Lock,
+  Mail,
 } from "lucide-react";
 import { DESTINATIONS, TOURS } from "@/lib/data";
+import { COMPANY_CONTACT } from "@/lib/socials";
+import SocialLinks, { InstagramIcon, FacebookIcon, TikTokIcon } from "@/components/common/SocialIcons";
 
 interface HeaderProps {
   onOpenMobileNav?: () => void;
@@ -106,6 +109,42 @@ export default function Header({ onOpenMobileNav }: HeaderProps) {
               <Lock className="w-3 h-3 text-gold-400" />
               <span>Admin Login</span>
             </Link>
+
+            <span className="text-navy-700">|</span>
+
+            {/* Quick Social Links */}
+            <div className="flex items-center gap-2.5">
+              <a
+                href={COMPANY_CONTACT.socials.instagram.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-400 hover:text-pink-400 transition-colors"
+                title="Instagram (@bilaltravels59)"
+                aria-label="Instagram"
+              >
+                <InstagramIcon className="w-3.5 h-3.5" />
+              </a>
+              <a
+                href={COMPANY_CONTACT.socials.facebook.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-400 hover:text-blue-400 transition-colors"
+                title="Facebook (Bilal Travels)"
+                aria-label="Facebook"
+              >
+                <FacebookIcon className="w-3.5 h-3.5" />
+              </a>
+              <a
+                href={COMPANY_CONTACT.socials.tiktok.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-400 hover:text-cyan-300 transition-colors"
+                title="TikTok (@bilaltravels36)"
+                aria-label="TikTok"
+              >
+                <TikTokIcon className="w-3.5 h-3.5" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -726,6 +765,22 @@ export default function Header({ onOpenMobileNav }: HeaderProps) {
                   LIVE
                 </span>
               </Link>
+              {/* Contact & Socials in Mobile Drawer */}
+              <div className="pt-3 border-t border-ivory-200 space-y-2">
+                <a
+                  href={`mailto:${COMPANY_CONTACT.email}`}
+                  className="text-xs text-navy-800 hover:text-gold-600 flex items-center gap-2"
+                >
+                  <Mail className="w-3.5 h-3.5 text-gold-600" />
+                  <span>{COMPANY_CONTACT.email}</span>
+                </a>
+                <div className="pt-1">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">
+                    Follow Our Channels:
+                  </span>
+                  <SocialLinks variant="pills" />
+                </div>
+              </div>
             </div>
 
             <div className="pt-2">
